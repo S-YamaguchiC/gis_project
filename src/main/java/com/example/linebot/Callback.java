@@ -15,6 +15,8 @@ import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.message.template.ButtonsTemplate;
+import com.linecorp.bot.model.message.template.CarouselColumn;
+import com.linecorp.bot.model.message.template.CarouselTemplate;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
@@ -72,7 +74,7 @@ public class Callback{
     }
 
     //位置情報を受け取ったときのイベント
-    @EventMapping
+    //@EventMapping
     public Message handleLocationMessage(MessageEvent<LocationMessageContent> event) {
         LocationMessageContent lmc = event.getMessage();
         double lat = lmc.getLatitude();     //
@@ -83,8 +85,9 @@ public class Callback{
         //return handleTextMessageEvent(event);   //種別の選択肢を送信したい
     }
 
-    //ボタンテンプレートの設計的な部分?(種別返信用ボタン)
-    public ReplyMessage handleTextMessageEvent(MessageEvent<LocationMessageContent> event) {
+    //ボタンテンプレートの設計的な部分(種別返信用ボタン)
+    @EventMapping
+    public Message handleCategoryMessageEvent(MessageEvent<LocationMessageContent> event) {
 
         //ボタンに必要ぽいサムネイル画像
         String thumbnailImageUrl = "https://puu.sh/BbfNS/c2fa6e5411.jpg";
@@ -98,11 +101,12 @@ public class Callback{
         ButtonsTemplate bt = new ButtonsTemplate(thumbnailImageUrl,"種別選択", "ひとつ選んで", actions);
 
         String altTitle = "種別選択";
-        return new ReplyMessage(event.getReplyToken(), new TemplateMessage(altTitle, bt));
+        //return new ReplyMessage(event.getReplyToken(), new TemplateMessage(altTitle, bt));
+        return new TemplateMessage(altTitle, bt);
     }
-
-    //
-    public ReplyMessage handlePostbackEvent(PostbackEvent event) {
+    //↑の選択に応じて返答する
+    @EventMapping
+    public Message handleCategoryPostback(PostbackEvent event) {
 
         PostbackContent pbc = event.getPostbackContent();
 
@@ -110,17 +114,49 @@ public class Callback{
         String data = pbc.getData();
 
         final String replyText;
+        final String altText;
+        final CarouselTemplate template;
 
         //選んだもので分岐して内容選択させる
         if("hosou".equals(data)) {
             replyText = "「舗装」の内容を選んで";
+            altText = "「舗装」の内容を選んで";
+            template = handleContentMessageEvent1();
         } else if("josetu".equals(data)) {
             replyText = "「除雪」の内容を選んで";
+            altText = "「除雪」の内容を選んで";
+            template = handleContentMessageEvent2();
         } else {
             replyText = "「その他」の内容を選んで";
+            altText = "「その他」の内容を選んで";
+            template = handleContentMessageEvent99();
         }
 
-        return new ReplyMessage(event.getReplyToken(), Arrays.asList(new TextMessage(replyText)));
+        return new TemplateMessage(altText,template);
+    }
+
+    //種別->舗装のときのやつ
+    public CarouselTemplate handleContentMessageEvent1() {
+        ContentColumn cc = new ContentColumn();
+        List<CarouselColumn> columns = Arrays.asList(cc.carouselColumn1(),cc.carouselColumn2());
+        CarouselTemplate ct = new CarouselTemplate(columns);
+        return ct;
+    }
+
+    //種別->除雪のときのやつ
+    public CarouselTemplate handleContentMessageEvent2() {
+        ContentColumn cc = new ContentColumn();
+        List<CarouselColumn> columns = Arrays.asList();     //未完->ContentColumnにメソッドを作ってカラムを追加
+        CarouselTemplate ct = new CarouselTemplate(columns);
+        return ct;
+    }
+
+    //種別->その他のときのやつ
+    public CarouselTemplate handleContentMessageEvent99() {
+        ContentColumn cc = new ContentColumn();
+        List<CarouselColumn> columns = Arrays.asList();     //未完->ContentColumnにメソッドを作ってカラムを追加
+        CarouselTemplate ct = new CarouselTemplate(columns);
+        return ct;
     }
 
 
