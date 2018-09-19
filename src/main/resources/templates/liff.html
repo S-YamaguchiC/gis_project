@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- The html based on https://github.com/line/line-liff-starter/blob/master/index.html -->
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIFF Starter</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script type="text/javascript">
+    <!--種別の選択肢によって内容の選択肢を変える-->
+    function selectChange()
+    {
+
+    var select1 = document.forms.report.type; //変数select1を宣言
+    var select2 = document.forms.report.category; //変数select2を宣言
+
+    select2.options.length = 0; // 選択肢の数がそれぞれに異なる場合、これが重要
+
+    if (select1.options[select1.selectedIndex].value == "舗装")
+    {
+    select2.options[0] = new Option("道路に穴が空いています");
+    select2.options[1] = new Option("道路が爆発しています");
+    select2.options[2] = new Option("その他");
+    }
+
+    else if (select1.options[select1.selectedIndex].value == "除雪")
+    {
+    select2.options[0] = new Option("雪の山で見通しが悪いんだよね");
+    select2.options[1] = new Option("歩道がもはや存在しない");
+    select2.options[2] = new Option("除雪して（切実）");
+    select2.options[3] = new Option("その他");
+    }
+
+    else if (select1.options[select1.selectedIndex].value == "その他")
+    {
+    select2.options[0] = new Option("お腹痛い");
+    select2.options[1] = new Option("眠い");
+    }
+
+    }
+    </script>
+    <script>
+        <!--いまいち動いてんのかわからん-->
+        $('#upload_chat_button').click(function(){
+            $('#upload_chat').click();
+            return false;
+        });
+    </script>
+
+</head>
+
+<body onload="selectChange()">
+
+<h1>[[${test}]]</h1>
+<form id="report" name="report" method="post" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <td>報告番号（自動取得）</td>
+            <td><label id="reportid">報告番号</label></td>
+        </tr>
+        <tr>
+            <td>
+                <label for="type">報告種別(*)</label>
+            </td>
+            <td>
+                <select id="type" name="type" onchange="selectChange()" required>
+                    <option value="舗装">舗装</option>
+                    <option value="除雪">除雪</option>
+                    <option value="その他">その他</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="category">報告内容(*)</label>
+            </td>
+            <td>
+                <select id="category" name="category" required>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="detail">詳細記入(なんでもどうぞ)</label>
+            </td>
+            <td>
+                <textarea id="detail" form="report" placeholder="200字まで" maxlength="200" rows="5"></textarea>
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td>
+                <input type="file" id="upload_picture" name="picture" accept="image/*" capture="camera">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit" onclick="">報告</button>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+<script src="liff-starter.js"></script>
+</body>
+</html>
