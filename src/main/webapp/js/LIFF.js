@@ -75,3 +75,6 @@ function toggleProfileData() {
         elem.style.display = "block";
     }
 }
+
+
+//以下、画像を送信するためのアップロード関連

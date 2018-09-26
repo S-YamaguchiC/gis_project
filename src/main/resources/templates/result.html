@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+
+    <script>
+        function winClose() {
+            alert("CLOSE");
+            close();
+        }
+    </script>
+
+</head>
+<body>
+    <p align="center">以下の内容で報告完了しまんた</p>
+    <p>
+        報告番号：○○<br>
+        種別：<span th:text="${type}">種別</span><br>
+        内容：<span th:text="${category}">種別</span><br>
+        詳細：<span th:text="${detail}">種別</span><br>
+        画像：<img th:src="@{/resources/static.images/e25ddf94.jpg}">
+    </p>
+    <input type="button" style="position: absolute; left: 80px; right: 80px;" value="閉じる(閉じれない)" onclick="winClose()">
+</body>
+</html>

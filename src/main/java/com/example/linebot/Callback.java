@@ -78,6 +78,9 @@ public class Callback{
                 return reply("報告は、位置情報・種別・内容・詳細の4つを入力してください。（中断は「キャンセル」を入力）" + "\n1.位置情報を入力してください");
             case "キャンセル":
                 return reply("報告を中断します");
+            case "liff":
+                //LIFFIDいちいち投げるのだるいのでこっちから返す
+                return reply("LIFF -> " + "line://app/1596332300-a2Zg7WWN");
             default:
                 if(text.isEmpty()) {
                     return reply("？");

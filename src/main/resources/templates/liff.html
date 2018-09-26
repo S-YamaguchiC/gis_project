@@ -6,39 +6,6 @@
     <title>LIFF Starter</title>
     <link rel="stylesheet" href="style.css">
 
-    <script type="text/javascript">
-    <!--種別の選択肢によって内容の選択肢を変える-->
-    function selectChange()
-    {
-
-    var select1 = document.forms.report.type; //変数select1を宣言
-    var select2 = document.forms.report.category; //変数select2を宣言
-
-    select2.options.length = 0; // 選択肢の数がそれぞれに異なる場合、これが重要
-
-    if (select1.options[select1.selectedIndex].value == "舗装")
-    {
-    select2.options[0] = new Option("道路に穴が空いています");
-    select2.options[1] = new Option("道路が爆発しています");
-    select2.options[2] = new Option("その他");
-    }
-
-    else if (select1.options[select1.selectedIndex].value == "除雪")
-    {
-    select2.options[0] = new Option("雪の山で見通しが悪いんだよね");
-    select2.options[1] = new Option("歩道がもはや存在しない");
-    select2.options[2] = new Option("除雪して（切実）");
-    select2.options[3] = new Option("その他");
-    }
-
-    else if (select1.options[select1.selectedIndex].value == "その他")
-    {
-    select2.options[0] = new Option("お腹痛い");
-    select2.options[1] = new Option("眠い");
-    }
-
-    }
-    </script>
     <script>
         <!--いまいち動いてんのかわからん-->
         $('#upload_chat_button').click(function(){
@@ -47,16 +14,66 @@
         });
     </script>
 
+    <script>
+        function selectChange()
+        {
+
+            var select1 = document.forms.report.type; //変数select1を宣言
+            var select2 = document.forms.report.category; //変数select2を宣言
+
+            select2.options.length = 0; // 選択肢の数がそれぞれに異なる場合、これが重要
+
+            if (select1.options[select1.selectedIndex].value == "舗装")
+            {
+                select2.options[0] = new Option("道路に穴が空いています");
+                select2.options[1] = new Option("道路が爆発しています");
+                select2.options[2] = new Option("その他");
+            }
+
+            else if (select1.options[select1.selectedIndex].value == "除雪")
+            {
+                select2.options[0] = new Option("雪の山で見通しが悪いんだよね");
+                select2.options[1] = new Option("歩道がもはや存在しない");
+                select2.options[2] = new Option("除雪して（切実）");
+                select2.options[3] = new Option("その他");
+            }
+
+            else if (select1.options[select1.selectedIndex].value == "その他")
+            {
+                select2.options[0] = new Option("お腹痛い");
+                select2.options[1] = new Option("眠い");
+            }
+
+        }
+    </script>
+
+    <script>
+        //LIFFで入力した値を送信時にLINEbotのチャットルームに送る
+        function formsend()
+        {
+            var textmessage = "[報告番号]:" + document.getElementById("reportid").value
+                                + "\n[種別]"
+                                + document.getElementById("type").value
+                                + "\n[内容]"
+                                + document.getElementById("category").value
+                                + "\n[詳細]"
+                                + document.getElementById("detail").value;
+        alert(textmessage);
+        window.location.href = "pop.html";
+        onsubmit;
+        }
+    </script>
+
 </head>
 
 <body onload="selectChange()">
 
 <h1>[[${test}]]</h1>
-<form id="report" name="report" method="post" enctype="multipart/form-data">
+<form id="report" name="report" method="post" enctype="multipart/form-data" action="result.html">
     <table>
         <tr>
             <td>報告番号（自動取得）</td>
-            <td><label id="reportid">報告番号</label></td>
+            <td><label id="reportid" name="number">報告番号</label></td>
         </tr>
         <tr>
             <td>
@@ -81,22 +98,23 @@
         </tr>
         <tr>
             <td>
-                <label for="detail">詳細記入(なんでもどうぞ)</label>
+                詳細記入(なんでもどうぞ)
             </td>
             <td>
-                <textarea id="detail" form="report" placeholder="200字まで" maxlength="200" rows="5"></textarea>
+                <textarea name="detail" form="report" placeholder="200字まで" maxlength="300" rows="5"></textarea>
             </td>
         </tr>
     </table>
     <table>
         <tr>
             <td>
-                <input type="file" id="upload_picture" name="picture" accept="image/*" capture="camera">
+                <!--画像の選択ボタン-->
+                <input type="file" name="picture" accept="image/*">
             </td>
         </tr>
         <tr>
             <td>
-                <button type="submit" onclick="">報告</button>
+                <input type="submit" value="報告">
             </td>
         </tr>
     </table>
