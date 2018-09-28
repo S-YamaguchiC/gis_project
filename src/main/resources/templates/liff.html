@@ -63,7 +63,19 @@
         onsubmit;
         }
     </script>
+    <script>
 
+        function getFilename() {
+            var path = document.getElementById("file").value;
+            var regex = /\\|\\/;
+            var array = path.split(regex);
+            var f_name = array[array.length - 1];
+            //alert(f_name);
+            document.getElementsByName("filename").value = f_name;
+            alert(document.getElementsByName("filename").value);
+            document.report.submit();
+        }
+    </script>
 </head>
 
 <body onload="selectChange()">
@@ -109,12 +121,22 @@
         <tr>
             <td>
                 <!--画像の選択ボタン-->
-                <input type="file" name="picture" accept="image/*">
+                <input type="file" id="file" accept="image/*">
+                <script>
+                    var obj1 = document.getElementById("file");
+
+                    obj1.addEventListener("change", function(evt){
+                        var file = evt.target.files;
+                        alert(file[0].name + "を取得しました。");
+                        document.report.filename.value = file[0].name;
+                    },false);
+                </script>
+                <input type="hidden" name="filename" value="image">
             </td>
         </tr>
         <tr>
             <td>
-                <input type="submit" value="報告">
+                <input type="button" value="報告" onclick="getFilename()">
             </td>
         </tr>
     </table>

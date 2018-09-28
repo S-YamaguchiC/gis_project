@@ -43,12 +43,16 @@ public class LIFFController {
     public String pic(ModelMap modelMap,
                       @RequestParam("type")String type,
                       @RequestParam("category")String cat,
-                      @RequestParam("detail")String det
-
+                      @RequestParam("detail")String det,
+                      @RequestParam("filename")String fname
     ){
         modelMap.addAttribute("type",type);
         modelMap.addAttribute("category",cat);
         modelMap.addAttribute("detail",det);
+        modelMap.addAttribute("filename",fname);
+
+        //クラスパス上に保存した画像のBase64変換
+
         return "/result";
     }
 

@@ -80,7 +80,7 @@ public class Callback{
                 return reply("報告を中断します");
             case "liff":
                 //LIFFIDいちいち投げるのだるいのでこっちから返す
-                return reply("LIFF -> " + "line://app/1596332300-a2Zg7WWN");
+                return reply("LIFF -> " + "line://app/1596332300-k5MlRDDy");
             default:
                 if(text.isEmpty()) {
                     return reply("？");
