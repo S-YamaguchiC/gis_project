@@ -9,7 +9,6 @@ import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.PostbackEvent;
 import com.linecorp.bot.model.event.message.ImageMessageContent;
 import com.linecorp.bot.model.event.message.LocationMessageContent;
-import com.linecorp.bot.model.event.message.MessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.event.postback.PostbackContent;
 import com.linecorp.bot.model.message.*;
@@ -80,11 +79,7 @@ public class Callback{
                 return reply("報告を中断します");
             case "liff":
                 //LIFFIDいちいち投げるのだるいのでこっちから返す
-<<<<<<< HEAD
-                return reply("LIFF -> " + "line://app/1596332300-k5MlRDDy");
-=======
-                return reply("LIFF -> " + "LIFFのID");
->>>>>>> refs/remotes/origin/master
+                return reply("LIFF -> " + "line://app/1596332300-K7Pg8772");
             default:
                 if(text.isEmpty()) {
                     return reply("？");

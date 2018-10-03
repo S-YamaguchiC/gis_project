@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>upload</title>
+</head>
+<body>
+<p>ファイル名：<br><strong>[[${message}]]</strong></p>
+
+    <form id="data_upload_form" method="post" enctype="multipart/form-data">
+        <input type="file" id="upload_file" name="upload_file"/>
+        <button type="submit" id="data_upload_button">upload</button>
+    </form>
+    <script>
+        // 主処理部
+        $(function(){
+
+            // アップロードボタンを押下した
+            $("#data_upload_form").submit(function(event){
+                // 要素規定の動作をキャンセルする
+                event.preventDefault();
+
+                var ajaxUrl = "file/upload?";
+                // ファイル種類
+                //ajaxUrl += "filetype=" + $("#select_file_type option:selected").val();
+
+                if(window.FormData){
+                    var formData = new FormData($(this)[0]);
+
+                    $.ajax({
+                        type : "POST",                  // HTTP通信の種類
+                        url  : ajaxUrl,                 // リクエストを送信する先のURL
+                        dataType : "text",              // サーバーから返されるデータの型
+                        data : formData,                // サーバーに送信するデータ
+                        processData : false,
+                        contentType: false,
+                    }).done(function(data) {        // Ajax通信が成功した時の処理
+                        alert("アップロードが完了しました。");
+                    }).fail(function(XMLHttpRequest, textStatus, errorThrown) { // Ajax通信が失敗した時の処理
+                        alert("アップロードが失敗しました。");
+                    });
+                }else{
+                    alert("アップロードに対応できていないブラウザです。");
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

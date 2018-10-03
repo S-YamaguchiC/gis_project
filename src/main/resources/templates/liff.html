@@ -64,6 +64,11 @@
         }
     </script>
     <script>
+        function test() {
+            window.location.href = "upload.html";
+        }
+    </script>
+    <script>
 
         function getFilename() {
             var path = document.getElementById("file").value;
@@ -121,7 +126,7 @@
         <tr>
             <td>
                 <!--画像の選択ボタン-->
-                <input type="file" id="file" accept="image/*">
+                <input type="file" id="file" name="file" accept="image/*">
                 <script>
                     var obj1 = document.getElementById("file");
 
@@ -136,6 +141,7 @@
         </tr>
         <tr>
             <td>
+                <a onclick="test()" >testupload</a>
                 <input type="button" value="報告" onclick="getFilename()">
             </td>
         </tr>
