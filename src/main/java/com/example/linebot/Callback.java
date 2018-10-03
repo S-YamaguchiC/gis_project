@@ -79,7 +79,11 @@ public class Callback{
                 return reply("報告を中断します");
             case "liff":
                 //LIFFIDいちいち投げるのだるいのでこっちから返す
+<<<<<<< HEAD
                 return reply("LIFF -> " + "line://app/1596332300-K7Pg8772");
+=======
+                return reply("LIFF -> " + "LIFFのID");
+>>>>>>> refs/remotes/origin/master
             default:
                 if(text.isEmpty()) {
                     return reply("？");
