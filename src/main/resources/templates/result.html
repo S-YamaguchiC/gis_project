@@ -13,8 +13,8 @@
         内容：<span th:text="${category}">種別</span><br>
         詳細：<span th:text="${detail}">種別</span><br>
         名前：<span th:text="${filename}">画像名</span><br>
-        画像1：<img src="data:image/png;base64, ****"><br>
-        画像2：<img src="data:image/png;base64, ****">
+        位置情報：<span th:text="${locate}">位置情報</span><br>
+        画像：<img th:src="${base64}"><br>
     </p>
     <input type="button" style="position: absolute; left: 80px; right: 80px;" value="閉じる(閉じれない)" onclick="this.window.close()">
 </body>

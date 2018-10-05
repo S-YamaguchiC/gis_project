@@ -8,11 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Base64;
 import java.util.Optional;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -32,19 +31,32 @@ public class LIFFController {
     /*
      *  次の画面で入力した報告の表示
      *  ※ここでサーバーに送信するなりDBに保存する
+     *
      */
+
+    /*
+    * @param type 報告の種別
+    * @param cat 報告の内容
+    * @param det 詳細記入
+    * @param fname 送信するファイル名
+    * @param locate 送信する位置情報
+    * @param mfile Base64変換するファイルのバイナリデータ?
+    *
+    * */
     @RequestMapping("/result")
     public String pic(ModelMap modelMap,
                       @RequestParam("type")String type,
                       @RequestParam("category")String cat,
                       @RequestParam("detail")String det,
                       @RequestParam("filename")String fname,
+                      @RequestParam("locate")String locate,
                       @RequestParam("file") MultipartFile mfile
-    ){
+    ) throws IOException {
         modelMap.addAttribute("type",type);
         modelMap.addAttribute("category",cat);
         modelMap.addAttribute("detail",det);
         modelMap.addAttribute("filename",fname);
+        modelMap.addAttribute("locate", locate);
 
         //画像をローカルに保存
         Optional<String> opt;
@@ -54,6 +66,25 @@ public class LIFFController {
 
         //ローカルに保存した画像のBase64変換
         File f = new File(path);
+        FileInputStream fis = new FileInputStream(f);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        long fileSize = f.length();
+        boolean readable = false;
+
+        do {
+            byte[] bytes = new byte[1];
+            fis.read(bytes);
+
+            baos.write(bytes,0,bytes.length);
+
+            long readSize = fis.getChannel().position();
+            readable = readSize != fileSize;
+        } while(readable);
+
+        String base64encodingStr = Base64.getEncoder().encodeToString(baos.toByteArray());
+        modelMap.addAttribute("base64","data:image/png;base64," + base64encodingStr);
+        //画像のリサイズ
+
 
         return "/result";
     }
