@@ -3,29 +3,19 @@
 <!-- The html based on https://github.com/line/line-liff-starter/blob/master/index.html -->
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIFF Starter</title>
-    <link rel="stylesheet" href="style.css">
-
-    <!-- 地図表示 -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin="">
-    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+    <title>Report Form</title>
     <style type="text/css">
         <!--
         #mapid { height: 380px; width: 380px}
         -->
     </style>
-    <!-- ここまで -->
-    <script>
-        function test() {
-            window.location.href = "upload.html";
-        }
-    </script>
 </head>
 
 <body onload="onPageLoad()">
 
 <h1>[[${test}]]</h1>
-<form id="report" name="report" method="post" enctype="multipart/form-data" action="result.html">
+<!--action属性を"result.html"に指定すると500ステータスになる、"templates//result.html"にすると404ステータスになる-->
+<form id="report" name="report" method="post" enctype="multipart/form-data" action="result">
     <table>
         <tr>
             <td>報告番号（自動取得）</td>
@@ -57,7 +47,7 @@
                 詳細記入(なんでもどうぞ)
             </td>
             <td>
-                <textarea name="detail" form="report" placeholder="200字まで" maxlength="300" rows="5"></textarea>
+                <textarea name="detail" form="report" placeholder="300字まで" maxlength="300" rows="5"></textarea>
             </td>
         </tr>
     </table>
@@ -70,26 +60,28 @@
             </td>
         </tr>
         <tr>
-            <!--位置情報の入力（）-->
-            <div id="mapid"></div>
-            <input type="button" id="currentLocation" value="現在の位置情報を取得する" onclick="">
-            <!--JSで取得した位置情報を送信するためのHIDDEN-->
-            <input type="hidden" id="location" value="LOCATE_DATA">
+            <!--地図がものすごく見づらいので折りたたみにしたけど、動きがとても悪いので修正が必要-->
+            <details>
+                <summary>位置情報の入力</summary>
+                <!--位置情報の入力（）-->
+                <div id="mapid"></div>
+                <input type="button" id="currentLocation" value="現在の位置情報を取得する" onclick="setCurLocation()">
+                <!--JSで取得した位置情報を送信するためのHIDDEN-->
+                <input type="text" name="location" value="LOCATE_DATA">
+            </details>
         </tr>
         <tr>
             <td>
-                <!--開発用リンク-->
-                <a onclick="test()" >testupload</a>
                 <input type="button" value="報告" onclick="getFilename()">
             </td>
         </tr>
     </table>
 </form>
 
-<script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
-<script src="liff-starter.js"></script>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="../static/js/MarkerController.js" th:src="@{../static/js/MarkerController.js}"></script>
-<script src="../static/js/OnPageLoad.js" th:src="@{../static/js/OnPageLoad.js}"></script>
+<!-- 地図表示 -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+<script src="/js/OnPageLoad.js" th:src="@{/js/OnPageLoad.js}"></script>
 </body>
 </html>

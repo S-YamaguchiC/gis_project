@@ -49,14 +49,22 @@ public class LIFFController {
                       @RequestParam("category")String cat,
                       @RequestParam("detail")String det,
                       @RequestParam("filename")String fname,
-                      @RequestParam("locate")String locate,
+                      @RequestParam("location")String locate,
                       @RequestParam("file") MultipartFile mfile
     ) throws IOException {
         modelMap.addAttribute("type",type);
         modelMap.addAttribute("category",cat);
         modelMap.addAttribute("detail",det);
         modelMap.addAttribute("filename",fname);
-        modelMap.addAttribute("locate", locate);
+        modelMap.addAttribute("location", locate);
+
+        boolean exist = false;
+
+        //nullチェック
+        if(mfile.isEmpty()) {
+            //画像がなかった場合は画像の変換がいらないのでそのままresultに遷移
+            return "/result";
+        }
 
         //画像をローカルに保存
         Optional<String> opt;
@@ -81,8 +89,13 @@ public class LIFFController {
             readable = readSize != fileSize;
         } while(readable);
 
+        //base64にした画像データ
         String base64encodingStr = Base64.getEncoder().encodeToString(baos.toByteArray());
         modelMap.addAttribute("base64","data:image/png;base64," + base64encodingStr);
+
+        //画像がNULLじゃないはずなので、trueにして送信
+        exist = true;
+        modelMap.addAttribute("exist",exist);
         //画像のリサイズ
 
 
