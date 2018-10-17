@@ -3,14 +3,15 @@
 * https://qiita.com/yasumodev/items/ec684e81ee2eac4bdddd
 * http://jsfiddle.net/9hnpdd5p/6/
 * */
-
-window.onload = function(imgdata) {
-    var imageWidth = imgdata
+/*
+window.onload = function() {
+    // Source Image (preview)
+    var imgdata = document.getElementById("resizableImage").src;
     // Resize Base64 Image
     ImgB64Resize(imgdata, 300, 150,
         function(img_b64) {
             // Destination Image
-            document.getElementById("img_dst").src = img_b64;
+            document.getElementById("resized").src = img_b64;
         }
     );
 };
@@ -35,4 +36,35 @@ function ImgB64Resize(imgB64_src, width, height, callback) {
         callback(imgB64_dst);
     };
     img.src = imgB64_src;
+}
+*/
+
+window.onload = function (ev) {
+    //alert("onload");
+    var base64code = document.getElementById('base64code');
+
+    // Base64文字列を画像に変換
+    Base64ToImage(base64code, function(img) {
+
+        //高さと幅
+        var fwidth = img.width;
+        var fheight = img.height;
+
+        //リサイズ
+        img.width = 300;
+        img.height = fheight * (img.width / fwidth);
+
+        //出力
+        document.getElementById('resized').appendChild(img);
+        //alert("resized ->"+img.width+":"+img.height);
+    });
+};
+
+function Base64ToImage(base64img, callback) {
+    var img = new Image();
+    $('<input id="resized">').one('load', function() {
+        alert("callback?");
+        callback(img);
+    }).load();
+    img.src = base64img;
 }

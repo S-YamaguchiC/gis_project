@@ -61,14 +61,16 @@
         </tr>
         <tr>
             <!--地図がものすごく見づらいので折りたたみにしたけど、動きがとても悪いので修正が必要-->
-            <details>
-                <summary>位置情報の入力</summary>
-                <!--位置情報の入力（）-->
-                <div id="mapid"></div>
-                <input type="button" id="currentLocation" value="現在の位置情報を取得する" onclick="setCurLocation()">
-                <!--JSで取得した位置情報を送信するためのHIDDEN-->
-                <input type="text" name="location" value="LOCATE_DATA">
-            </details>
+            <!--マップの表示切り替え-->
+            <input type="button" value="地図を表示する" onclick="Display('no1')">
+            <input type="button" value="地図を非表示にする" onclick="Display('no2')">
+            <div id="mapid"></div>
+            <div id="maphide" style="display: none;"></div>
+
+            <input type="button" id="currentLocation" value="現在の位置情報を取得する" onclick="setCurLocation()">
+            <!--JSで取得した位置情報を送信するためのHIDDEN-->
+            <input type="hidden" name="lat" id="lat" value="Latitude">
+            <input type="hidden" name="lng" id="lng" value="Longitude">
         </tr>
         <tr>
             <td>

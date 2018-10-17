@@ -79,11 +79,7 @@ public class Callback{
                 return reply("報告を中断します");
             case "liff":
                 //LIFFIDいちいち投げるのだるいのでこっちから返す
-<<<<<<< HEAD
-                return reply("LIFF -> " + "line://app/1596332300-lpKjx77P");
-=======
-                return reply("LIFF -> " + "line://app/*****");
->>>>>>> refs/remotes/origin/master
+                return reply("LIFF -> " + "line://app/1596332300-bBerJAAO");
             default:
                 if(text.isEmpty()) {
                     return reply("？");
@@ -192,7 +188,7 @@ public class Callback{
 
         //確認フォームのボタンに対するアクション
         if("y".equals(data)) {
-            return reply("詳細記入フォームは考え中だから待って♡(終了)");
+            return reply("詳細記入フォームは考え中だから待って(終了)");
         } else if("n".equals(data)) {
             return reply("報告を送信しました。\nありがとうございます。");
         } else {
