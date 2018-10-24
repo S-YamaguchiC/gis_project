@@ -59,7 +59,7 @@ function drawMap() {
     mymap.on('locationerror', onLocationError);
     mymap.on('click', onMapClick);
 
-    //Androidで位置情報が取れない
+    //Androidで位置情報が取れないやつ回避
     mymap.locate({setView: true, maxZoom: 16, minZoom: 13, timeout: 20000 ,enableHighAccuracy:true});
 
 }
