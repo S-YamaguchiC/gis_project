@@ -15,9 +15,9 @@ public class ReportDaoImpl implements ReportDao {
     public void insert(String type, String category, String detail, String latitude, String longitude)
             throws SQLException {
 
-        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", // "jdbc:postgresql://[場所(Domain)]:[ポート番号]/[DB名]"
-                "postgres", // ログインロール
-                "postgres"); // パスワード
+        Connection connection = DriverManager.getConnection("jdbc:postgresql:***********", // "jdbc:postgresql://[場所(Domain)]:[ポート番号]/[DB名]"
+                "*******", // ログインロール
+                "*******"); // パスワード
         Statement statement = connection.createStatement();
 
         System.out.println(type);
