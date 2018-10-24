@@ -20,9 +20,8 @@
     </p>
         <!--画像があるときは画像の表示-->
     <p th:if="${exist}">
-        画像1：<img th:src="${base64}">
+        画像：<img th:src="${base64}">
         <input type="hidden" id="base64code" th:value="${base64}">
-        画像2：<img id="resized">
         <!---->
     </p>
     <!--画像がないときは無いよって表示-->

@@ -3,9 +3,6 @@
 * */
 var mymap;  //マップ
 var marker; //マーカー
-var popup = L.popup();  //ポップアップ
-var oldLat;   //最初期の緯度
-var oldLon;   //最初期の経度
 var newLat=0; //最後に送信する緯度
 var newLon=0; //最後に送信する経度
 
@@ -40,7 +37,7 @@ function drawMap() {
     }
 
     function onLocationError(e) {
-        alert("現在地を取得できませんでした。" + e.message);
+        alert("現在地を取得できませんでした。\nブラウザまたは本体の位置情報設定を見直してください。" + e.message);
     }
 
     function onMapClick(e) {
@@ -58,7 +55,8 @@ function drawMap() {
     mymap.on('locationerror', onLocationError);
     mymap.on('click', onMapClick);
 
-    mymap.locate({setView: true, maxZoom: 16, minZoom: 13, timeout: 20000});
+    //Androidで位置情報が取れない
+    mymap.locate({setView: true, maxZoom: 16, minZoom: 13, timeout: 20000 ,enableHighAccuracy:true});
 
 }
 
@@ -149,7 +147,7 @@ function inputLocation2(latitude,longitude) {
 //現在位置の再取得ボタン用関数
 function setCurLocation(){
     if (navigator.geolocation == false){
-        alert('現在地を取得できませんでした。');
+        alert('現在地を取得できませんでした。\n位置情報の設定を見直してください。');
         return;
     }
 
@@ -168,7 +166,7 @@ function setCurLocation(){
         alert('現在地を取得できませんでした。');
     };
 
-    navigator.geolocation.getCurrentPosition(success, error);
+    navigator.geolocation.getCurrentPosition(success, error, {enableHighAccuracy: true});
 }
 
 //--------------------------------------------------------------------------------------------------------------------

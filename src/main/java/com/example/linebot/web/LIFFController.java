@@ -1,5 +1,7 @@
 package com.example.linebot.web;
 
+import com.example.linebot.dao.ReportDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -9,10 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.util.Base64;
 import java.util.Optional;
 
@@ -21,6 +27,9 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Controller
 public class LIFFController {
+
+    @Autowired
+    ReportDao reportDao;
 
     @GetMapping("/liff")
     public String hello(Model model) {
@@ -60,7 +69,11 @@ public class LIFFController {
                       @RequestParam("lat")String lat,
                       @RequestParam("lng")String lng
 
-    ) throws IOException {
+    ) throws IOException, SQLException {
+
+        //DBにアクセス
+        reportDao.insert(type,cat,det,lat,lng);
+
         modelMap.addAttribute("type",type);
         modelMap.addAttribute("category",cat);
         modelMap.addAttribute("detail",det);
@@ -157,8 +170,9 @@ public class LIFFController {
         BufferedOutputStream bos = new BufferedOutputStream(baos);
         image.flush();
 
-        // 読み終わった画像をバイト出力へ。
-        ImageIO.write(image, "png", bos);
+        // リサイズしちゃって
+        // 読み終わった画像をバイト出力へ
+        ImageIO.write(resizeImageV2(image), "png", bos);
         bos.flush();
         bos.close();
 
@@ -169,9 +183,55 @@ public class LIFFController {
     }
 
     /*
-    * 改良版の改良版
+    * 画像のリサイズ(しっぱい)
     *
     * */
+    private BufferedImage resizeImage(BufferedImage image) {
 
+        //初期の値保存
+        int targetWidth = image.getWidth();
+        int targetHeight = image.getHeight();
+
+        //リサイズ
+        float width = 350;
+        float height = targetHeight * (width / targetWidth);
+
+        //Affine
+        AffineTransformOp affineTransformOp = new AffineTransformOp(
+                AffineTransform.getScaleInstance((double)width/width, (double)height/height ),
+                AffineTransformOp.TYPE_BILINEAR);
+        BufferedImage dstImage = new BufferedImage( (int)width, (int)height, image.getType() );
+        affineTransformOp.filter( image, dstImage);
+
+        return dstImage;
+    }
+
+    /*
+    *   成功したやつ
+    * */
+    private BufferedImage resizeImageV2(BufferedImage image) {
+
+        //初期の値保存
+        int targetWidth = image.getWidth();
+        int targetHeight = image.getHeight();
+
+        //リサイズ
+        float width = 400;
+        float height = targetHeight * (width / targetWidth);
+
+        BufferedImage resizedImg = new BufferedImage( (int)width, (int)height, BufferedImage.TRANSLUCENT);
+        Graphics2D g2 = resizedImg.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(image, 0, 0, (int)width, (int)height, null);
+        g2.dispose();
+
+        return resizedImg;
+    }
+
+    /**/
+    @RequestMapping("/android_test")
+    public String testpage() {
+        return "android_test";
+    }
 
 }
