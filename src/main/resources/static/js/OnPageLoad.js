@@ -5,17 +5,20 @@ var mymap;  //マップ
 var marker; //マーカー
 var newLat=0; //最後に送信する緯度
 var newLon=0; //最後に送信する経度
+var userName=null;
 
-function onPageLoad() {
+window.onload = function(e) {
 
     //初期設定
     drawMap();
     changeSelect();
+
     //LIFF init
     liff.init(function (data) {
        initApp(data);
     });
-}
+
+};
 
 //--------------------------------------------------------------------------------------------------------------------
 //地図の制御
@@ -110,7 +113,7 @@ function getFilename() {
     document.getElementById('lat').value=newLat;
     document.getElementById('lng').value=newLon;
 
-    document.report.submit();
+    //document.report.submit();
 }
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -167,11 +170,14 @@ function setCurLocation(){
         //追加
         newLat=lat;
         newLon=lng;
-    };
+    }
 
     function error() {
-        alert('現在地を取得できませんでした。');
-    };
+        alert("現在の位置情報が取得できないため、\n現在位置を\"千歳駅\"に設定します。")
+        marker = L.marker([ 42.8281,141.652328]).addTo(mymap).bindPopup("千歳駅").openPopup();
+        newLat = 42.8281;
+        newLon = 141.652328;
+    }
 
     navigator.geolocation.getCurrentPosition(success, error, {enableHighAccuracy: true});
 }
@@ -194,4 +200,38 @@ function initApp(data) {
     //alert("init");
     document.getElementById('lineId').value = data.context.userId;
     //alert(document.getElementById('lineId').value);
+    liff.getProfile().then(function (profile) {
+        userName = profile.displayName;
+        alert(userName);
+    }).catch(function () {
+        alert('Eroor! getting DisplayName failed');
+    });
+
+    //
+    var sendBtn = document.getElementById('send');
+
+    sendBtn.addEventListener('click', function() {
+        //alert('send click');
+        if (navigator.userAgent.indexOf("Line") !== -1) {
+            alert('Agent: LINE');
+            //LINEにテキストを送信
+            liff.sendMessages([
+                {
+                    type: 'text',
+                    text: 'メッセージを送れるはずなんだよな'
+                }
+            ]).then(function () {
+                window.alert("Message sent");
+            }).catch(function (error) {
+                window.alert("Error sending message: " + error);
+            });
+        } else {
+            console.log("SENDING");
+        }
+
+        //
+        getFilename();
+    });
 }
+
+//-------------------------------------------------------------------------------------------------------------------
