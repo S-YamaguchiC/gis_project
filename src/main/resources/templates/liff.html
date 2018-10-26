@@ -75,15 +75,23 @@
         </tr>
         <tr>
             <td>
+                <!--報告だけはgetFilenameを呼ばないとダメ-->
                 <input type="button" value="報告" onclick="getFilename()">
             </td>
         </tr>
         <tr>
             <td>
-                <a href="android_test.html">Androidの位置情報テストリンク</a>
+                <button name="testlink">テストページ</button>
             </td>
         </tr>
     </table>
+</form>
+<form action="sendReq", method="get">
+    <tr>
+        <td>
+            <button name="textmessage">テキスト送りたい</button>
+        </td>
+    </tr>
 </form>
 
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
