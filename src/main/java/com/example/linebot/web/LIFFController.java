@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,7 +43,7 @@ public class LIFFController {
     * @param mfile Base64変換するファイルのバイナリデータ?
     *
     * */
-    @RequestMapping("/result")
+    @RequestMapping(value = "/result")
     public String pic(ModelMap modelMap,
                       @RequestParam("type")String type,
                       @RequestParam("category")String cat,
@@ -89,10 +90,16 @@ public class LIFFController {
     }
 
 
-    /*test*/
-    @RequestMapping("/android_test")
+    /*testページに遷移*/
+    @RequestMapping(value = "result", params = "testlink", method = RequestMethod.POST)
     public String testpage() {
         return "android_test";
     }
 
+    /*テキストメッセージを送るテスト*/
+    @RequestMapping(value = "sendReq", params = "textmessage", method = RequestMethod.GET)
+    public String sendText(Model model) {
+        model.addAttribute("test", "LINEにテキストを送るテスト");
+        return "sendReq";
+    }
 }
