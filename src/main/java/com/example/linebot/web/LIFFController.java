@@ -98,11 +98,4 @@ public class LIFFController {
     public String testpage() {
         return "android_test";
     }
-
-    /*テキストメッセージを送るテスト*/
-    @RequestMapping(value = "sendReq", params = "textmessage", method = RequestMethod.GET)
-    public String sendText(Model model) {
-        model.addAttribute("test", "LINEにテキストを送るテスト");
-        return "sendReq";
-    }
 }
