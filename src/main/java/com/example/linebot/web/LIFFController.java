@@ -51,11 +51,12 @@ public class LIFFController {
                       @RequestParam("filename")String fname,
                       @RequestParam("file") MultipartFile mfile,
                       @RequestParam("lat")String lat,
-                      @RequestParam("lng")String lng
+                      @RequestParam("lng")String lng,
+                      @RequestParam("lineId")String lineid
 
     ) throws IOException, SQLException {
 
-        //DBにアクセス
+        //DBにアクセス(lineIdもここで保存)
         reportDao.insert(type,cat,det,lat,lng);
 
         modelMap.addAttribute("type",type);
@@ -64,6 +65,8 @@ public class LIFFController {
         modelMap.addAttribute("filename",fname);
         modelMap.addAttribute("lat", lat);
         modelMap.addAttribute("lng", lng);
+//        modelMap.addAttribute("lineId",lineid);
+        System.out.println("LINEid:" + lineid);
 
         //画像の有無
         boolean exist = false;

@@ -11,7 +11,10 @@ function onPageLoad() {
     //初期設定
     drawMap();
     changeSelect();
-
+    //LIFF init
+    liff.init(function (data) {
+       initApp(data);
+    });
 }
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -183,4 +186,12 @@ function Display(no){
         document.getElementById("mapid").style.display = "none";
         document.getElementById("maphide").style.display = "block";
     }
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+//LINEid
+function initApp(data) {
+    //alert("init");
+    document.getElementById('lineId').value = data.context.userId;
+    //alert(document.getElementById('lineId').value);
 }
