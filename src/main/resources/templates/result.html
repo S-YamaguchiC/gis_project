@@ -15,9 +15,7 @@
         種別：<span th:text="${type}">種別</span><br>
         内容：<span th:text="${category}">種別</span><br>
         詳細：<span th:text="${detail}">詳細</span><br>
-    <div th:if="${filename != 'image'}">
         名前：<span th:text="${filename}">画像名</span><br>
-    </div>
         緯度：<span th:text="${lat}"></span><br>
         経度：<span th:text="${lng}"></span><br>
     </p>
@@ -31,7 +29,5 @@
     <p th:unless="${exist}">
         送信した画像はありません
     </p>
-    <script src="/js/ImageController.js" th:src="@{/js/ImageController.js}"></script>
-    <!-- src="../static/js/ImaegController.js" などにすると、PCでは表示されるが携帯端末では表示できない -->
 </body>
 </html>
