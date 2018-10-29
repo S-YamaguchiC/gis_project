@@ -1,5 +1,6 @@
-package com.example.linebot;
+package com.example.linebot.line.sub;
 
+import com.example.linebot.line.ContentColumn;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.client.MessageContentResponse;
 import com.linecorp.bot.model.action.Action;
@@ -16,7 +17,6 @@ import com.linecorp.bot.model.message.template.ButtonsTemplate;
 import com.linecorp.bot.model.message.template.CarouselTemplate;
 import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
-import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ import java.util.concurrent.ExecutionException;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
-@LineMessageHandler
+//@LineMessageHandler
 public class Callback{
 
     private static final String CHANNEL_SECRET ="取得したものをいれる";
