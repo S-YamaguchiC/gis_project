@@ -202,35 +202,38 @@ function initApp(data) {
     //alert(document.getElementById('lineId').value);
     liff.getProfile().then(function (profile) {
         userName = profile.displayName;
-        alert(userName);
+        //alert(userName);
     }).catch(function () {
         alert('Eroor! getting DisplayName failed');
     });
 
     //
-    var sendBtn = document.getElementById('send');
+    var sendBtn = document.getElementById('sendmessagebutton');
 
     sendBtn.addEventListener('click', function() {
         //alert('send click');
         if (navigator.userAgent.indexOf("Line") !== -1) {
             alert('Agent: LINE');
             //LINEにテキストを送信
-            liff.sendMessages([
-                {
-                    type: 'text',
-                    text: 'メッセージを送れるはずなんだよな'
-                }
+            liff.sendMessages([{
+                type: 'text',
+                text: "You've successfully sent a message! Hooray!"
+            }, {
+                type: 'sticker',
+                packageId: '2',
+                stickerId: '144'
+            }
             ]).then(function () {
-                window.alert("Message sent");
-            }).catch(function (error) {
-                window.alert("Error sending message: " + error);
+                window.alert("トークに流したゾ");
+            }).catch(function () {
+                window.alert("トークに流せなかった");
+                console.log("だめです");
             });
         } else {
-            console.log("SENDING");
+            console.log("もんだいない");
         }
-
-        //
-        getFilename();
+        document.getElementById('lat').value=newLat;
+        document.getElementById('lng').value=newLon;
     });
 }
 
