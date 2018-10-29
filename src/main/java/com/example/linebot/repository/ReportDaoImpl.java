@@ -11,37 +11,28 @@ import java.sql.*;
 @Transactional
 public class ReportDaoImpl implements ReportDao {
 
+    public static final String URL ="jdbc:postgresql://localhost:5432/postgres";
+    public static final String USER_ID = "postgres";
+    public static final String PASSWD = "postgres";
+
     @Override
     public void insert(String type, String category, String detail, String latitude, String longitude)
             throws SQLException {
 
-        Connection connection = DriverManager.getConnection("jdbc:postgresql:***********", // "jdbc:postgresql://[場所(Domain)]:[ポート番号]/[DB名]"
-                "*******", // ログインロール
-                "*******"); // パスワード
-        Statement statement = connection.createStatement();
+        String sql = "insert into test_db (type, category, detail, location_lat, location_lng) values (?,?,?,?,?)";
 
-        System.out.println(type);
-        System.out.println(category);
-        System.out.println(detail);
-        System.out.println(latitude);
-        System.out.println(longitude);
+        try ( Connection conn = DriverManager.getConnection(URL, USER_ID, PASSWD) ) {
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("insert into test_db (type, category, detail, location_lat, location_lng) values('");
-        stringBuilder.append(type);
-        stringBuilder.append("','");
-        stringBuilder.append(category);
-        stringBuilder.append("','");
-        stringBuilder.append(detail);
-        stringBuilder.append("',");
-        stringBuilder.append(latitude);
-        stringBuilder.append(",");
-        stringBuilder.append(longitude);
-        stringBuilder.append(")");
+            try ( PreparedStatement ppst = conn.prepareStatement(sql) ) {
 
-        String sql = stringBuilder.toString();
-        System.out.println(sql);
+                ppst.setString(1, type);
+                ppst.setString(2, category);
+                ppst.setString(3, detail);
+                ppst.setString(4, latitude);
+                ppst.setString(5, longitude);
 
-        statement.executeUpdate(sql);
+                ppst.executeUpdate();
+            }
+        }
     }
 }
