@@ -6,6 +6,12 @@ var marker; //マーカー
 var newLat=0; //最後に送信する緯度
 var newLon=0; //最後に送信する経度
 var userName=null;
+var type = "type";
+var category = "category";
+var detail = "detail";
+var latitude = "lat";
+var longitude = "lng";
+
 
 window.onload = function(e) {
 
@@ -207,34 +213,44 @@ function initApp(data) {
         alert('Eroor! getting DisplayName failed');
     });
 
-    //
-    var sendBtn = document.getElementById('sendmessagebutton');
-
-    sendBtn.addEventListener('click', function() {
-        //alert('send click');
-        if (navigator.userAgent.indexOf("Line") !== -1) {
-            alert('Agent: LINE');
-            //LINEにテキストを送信
-            liff.sendMessages([{
-                type: 'text',
-                text: "You've successfully sent a message! Hooray!"
-            }, {
-                type: 'sticker',
-                packageId: '2',
-                stickerId: '144'
-            }
-            ]).then(function () {
-                window.alert("トークに流したゾ");
-            }).catch(function () {
-                window.alert("トークに流せなかった");
-                console.log("だめです");
-            });
-        } else {
-            console.log("もんだいない");
-        }
-        document.getElementById('lat').value=newLat;
-        document.getElementById('lng').value=newLon;
+    document.getElementById("sendmessagebutton").addEventListener('click', function (ev) {
+        type = document.report.type.value;
+        category = document.report.category.value;
+        detail = document.report.detail.value;
+        latitude = newLat;
+        longitude = newLon;
+       sendMessage();
     });
+
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+//sendMessage
+function sendMessage() {
+
+    var report = "種別：" + type + "\n"
+        + "内容：" + category + "\n"
+        + "詳細：" + detail + "\n"
+        + "緯度 / 経度：" + latitude + " / " + longitude;
+
+        //alert('send click');
+    if (navigator.userAgent.indexOf("Line") !== -1) {
+        //alert('Agent: LINE');
+        //LINEにテキストを送信
+        liff.sendMessages([
+            {
+                type: 'text',
+                text: report
+            }
+        ]).then(function () {
+            window.alert("トークに流したゾ");
+            liff.closeWindow();
+        }).catch(function () {
+            window.alert("トークに流せなかった");
+        });
+    } else {
+        console.log("もんだいない");
+    }
 }
 
 //-------------------------------------------------------------------------------------------------------------------
