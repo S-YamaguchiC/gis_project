@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <!-- The html based on https://github.com/line/line-liff-starter/blob/master/index.html -->
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--拡大縮小の制限-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Report Form</title>
     <style type="text/css">
         <!--
@@ -18,38 +19,53 @@
 <form id="report" name="report" method="post" enctype="multipart/form-data" action="result">
     <table>
         <tr>
-            <td>報告番号（自動取得）</td>
-            <p>※一部の機種では地図機能が使えないことがあります（その場合は諦めてください）</p>
-            <td><label id="reportid" name="number">報告番号</label></td>
-        </tr>
-        <tr>
             <td>
-                <label for="type">報告種別(*)</label>
-            </td>
-            <td>
-                <select id="type" name="type" onchange="changeSelect()" required>
-                    <option value="舗装">舗装</option>
-                    <option value="除雪">除雪</option>
-                    <option value="その他">その他</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="category">報告内容(*)</label>
-            </td>
-            <td>
-                <select id="category" name="category" required>
-                </select>
+                <p class="font">
+                    <label for="type">報告種別</label>
+                    <span class="required">&nbsp;必須&nbsp;</span>
+                    <tb>
+
+                        <select class="box" id="type" name="type" onchange="changeSelect()" required>
+                            <option value="">報告種別を選択してください</option>
+                            <option value="舗装">舗装</option>
+                            <option value="照明等">照明等</option>
+                            <option value="道路付属物">道路付属物</option>
+                            <option value="雨水・排水">雨水・排水</option>
+                            <option value="小動物の死骸">小動物の死骸</option>
+                            <option value="樹木・雑草">樹木・雑草</option>
+                            <option value="除雪">除雪</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </tb>
+                </p>
             </td>
         </tr>
+        <!------------------------------報告内容------------------------------>
         <tr>
             <td>
-                詳細記入(なんでもどうぞ)
+                <p class="font">
+                    <label for="category">報告内容</label>
+                    <span class="required">&nbsp;必須&nbsp;</span>
+                    <tb>
+                        <select class="box" id="category" name="category" required>
+                        </select>
+
+                    </tb>
+                </p>
             </td>
+        </tr>
+        <!------------------------------詳細記入------------------------------>
+        <tr>
             <td>
-                <textarea name="detail" form="report" placeholder="300字まで" maxlength="300" rows="5"></textarea>
+                <p></p>
+                <label class="font">詳細記入</label>
+                <span class="any">&nbsp;任意&nbsp;</span>
+                <tb>
+                    <textarea class="textarea" name="detail" form="report" placeholder="300字まで" maxlength="300"
+                              rows="5"></textarea>
+                </tb>
             </td>
+
         </tr>
     </table>
     <table id="table2">
@@ -96,5 +112,7 @@
 <script src="/js/OnPageLoad.js"></script>
 <!--Cokkieで入力値を保持-->
 <script src="/js/dataSave.js"></script>
+<!--CSS-->
+<link href="/css/liff.css" rel="stylesheet">
 </body>
 </html>
