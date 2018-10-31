@@ -1,8 +1,10 @@
 package com.example.linebot.line;
 
+import com.example.linebot.Report;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.action.Action;
 import com.linecorp.bot.model.action.PostbackAction;
+import com.linecorp.bot.model.action.URIAction;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.PostbackEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
@@ -20,6 +22,8 @@ import java.util.ArrayList;
 @LineMessageHandler
 public class CallbackV2 {
 
+    Report report = new Report();
+
     @Autowired
     private LineMessagingClient lineMessagingClient;
 
@@ -28,10 +32,18 @@ public class CallbackV2 {
         return new TextMessage(text);
     }
 
-    // 確認フォームテンプレ
-    public ConfirmTemplate confirmTemplate(String text) {
-        Action left = new PostbackAction("はい","y");
-        Action right = new PostbackAction("いいえ","n");
+    // 確認フォームテンプレ(非対応メッセージ用)
+    public ConfirmTemplate confirmTemplateM1(String text) {
+        Action left = new PostbackAction("はい","MY");
+        Action right = new PostbackAction("いいえ","MN");
+        return new ConfirmTemplate(text,left,right);
+    }
+
+    // 確認フォームテンプレ(LIFF対応用)
+    public ConfirmTemplate confirmTemplateLIFF(String text) {
+        //Action left = new PostbackAction("はい","LY");
+        Action left = new URIAction("はい", "LIFFのURI");
+        Action right = new PostbackAction("いいえ","LN");
         return new ConfirmTemplate(text,left,right);
     }
 
@@ -53,19 +65,32 @@ public class CallbackV2 {
             }
 
             try {
-                String type = arrayList.get(0);
-                String category = arrayList.get(1);
-                String detail = arrayList.get(2);
-                String latlng = arrayList.get(3);
+                // 緯度経度を分割
+                ArrayList<String> latlng = substring.getLatLng(arrayList.get(3));
+                // ほかクラスに保存
+                report.setType(arrayList.get(0));
+                report.setCategory(arrayList.get(1));
+                report.setDetail(arrayList.get(2));
+
+                report.setLatitude(latlng.get(0));
+                report.setLongitude(latlng.get(1));
+
+                System.out.println(report.getType()+"\n"
+                        +report.getCategory()+"\n"
+                        +report.getDetail()+"\n"
+                        +report.getLatitude()+"\n"
+                        +report.getLongitude()
+                );
+
             } catch (ArrayIndexOutOfBoundsException e) {
                 e.printStackTrace();
             }
 
-            return new TemplateMessage("内容を修正しますか", confirmTemplate(text+"\n内容を修正しますか？"));
+            return new TemplateMessage("内容を修正しますか", confirmTemplateLIFF(text+"\n内容を修正しますか？"));
 
         } else {
             String string = "対応していないメッセージです。\n報告フォームを表示しますか？";
-            return new TemplateMessage(string, confirmTemplate(string));
+            return new TemplateMessage(string, confirmTemplateM1(string));
         }
     }
 
@@ -77,16 +102,26 @@ public class CallbackV2 {
         // Postback
         PostbackContent pbc = event.getPostbackContent();
 
-        //ボタンで選んだやつを取ってくる
+        // ボタンで選んだやつを取ってくる
         String data = pbc.getData();
 
-        //確認フォームのボタンに対するアクション
-        if("y".equals(data)) {
-            return reply("LIFFを起動する予定");
-        } else if("n".equals(data)) {
+        // 確認フォームのボタンに対するアクション
+        if("MY".equals(data)) {
+
+            return reply("LIFFのURI");
+
+        } else if("MN".equals(data)) {
+
+            return reply("画面下の「報告フォーム」から報告ができます。");
+
+        } else if("LN".equals(data)) {
+
             return reply("報告を送信しました。（仮）\nありがとうございます。");
+
         } else {
+
             return reply("どうすることもできんゾ : data -> " + data);
+
         }
     }
 }
