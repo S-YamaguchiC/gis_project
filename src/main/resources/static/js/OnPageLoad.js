@@ -18,12 +18,12 @@ window.onload = function(e) {
     //初期設定
     drawMap();
     changeSelect();
+    load_cookie();
 
     //LIFF init
     liff.init(function (data) {
-       initApp(data);
+        initApp(data);
     });
-
 };
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -179,7 +179,7 @@ function setCurLocation(){
     }
 
     function error() {
-        alert("現在の位置情報が取得できないため、\n現在位置を\"千歳駅\"に設定します。")
+        alert("現在の位置情報が取得できないため、\n現在位置を\"千歳駅\"に設定します。");
         marker = L.marker([ 42.8281,141.652328]).addTo(mymap).bindPopup("千歳駅").openPopup();
         newLat = 42.8281;
         newLon = 141.652328;
