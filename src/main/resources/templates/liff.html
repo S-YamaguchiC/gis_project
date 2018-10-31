@@ -48,7 +48,7 @@
                 詳細記入(なんでもどうぞ)
             </td>
             <td>
-                <textarea name="detail" th:text="${s_detail}" form="report" placeholder="300字まで" maxlength="300" rows="5"></textarea>
+                <textarea name="detail" form="report" placeholder="300字まで" maxlength="300" rows="5"></textarea>
             </td>
         </tr>
     </table>
@@ -70,13 +70,13 @@
 
             <input type="button" id="currentLocation" value="現在の位置情報を取得する" onclick="setCurLocation()">
             <!--JSで取得した位置情報を送信するためのHIDDEN-->
-            <input type="hidden" name="lat" id="lat" th:text="${s_latitude}" value="Latitude">
-            <input type="hidden" name="lng" id="lng" th:text="${s_longitude}" value="Longitude">
+            <input type="hidden" name="lat" id="lat" value="Latitude">
+            <input type="hidden" name="lng" id="lng" value="Longitude">
             <input type="hidden" name="lineId" id="lineId" value="LineId">
         </tr>
         <tr>
             <td>
-                <input type="button" id="sendmessagebutton" value="送信する" >
+                <input type="button" id="sendmessagebutton" value="送信する"  onclick="save_cookie()">
             </td>
         </tr>
         <tr>
@@ -94,5 +94,7 @@
 <!--LineId-->
 <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
 <script src="/js/OnPageLoad.js"></script>
+<!--Cokkieで入力値を保持-->
+<script src="/js/dataSave.js"></script>
 </body>
 </html>
