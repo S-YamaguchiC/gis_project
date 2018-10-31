@@ -11,9 +11,9 @@ import java.sql.*;
 @Transactional
 public class ReportDaoImpl implements ReportDao {
 
-    public static final String URL ="jdbc:postgresql://localhost:5432/postgres";
-    public static final String USER_ID = "postgres";
-    public static final String PASSWD = "postgres";
+    public static final String URL ="jdbc:postgresql://localhost:5432/****";
+    public static final String USER_ID = "****";
+    public static final String PASSWD = "****";
 
     @Override
     public void insert(String type, String category, String detail, String latitude, String longitude)
