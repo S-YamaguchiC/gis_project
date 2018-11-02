@@ -26,4 +26,19 @@ public class Substring {
 
         return array;
     }
+
+    public ArrayList<String> getLatLng(String str) {
+
+        // split
+        String[] split = str.split("/ ");
+
+        // array
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        for (int i=0; i<2; i++) {
+            arrayList.add(split[i]);
+        }
+
+        return arrayList;
+    }
 }
