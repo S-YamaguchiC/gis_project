@@ -7,7 +7,7 @@
     <title>Report Form</title>
     <style type="text/css">
         <!--
-        #mapid { height: 380px; width: 380px}
+        #mapid { height: 300px; width: 300px}
         -->
     </style>
 </head>
@@ -24,7 +24,6 @@
                     <label for="type">報告種別</label>
                     <span class="required">&nbsp;必須&nbsp;</span>
                     <tb>
-
                         <select class="box" id="type" name="type" onchange="changeSelect()" required>
                             <option value="">報告種別を選択してください</option>
                             <option value="舗装">舗装</option>
@@ -49,7 +48,6 @@
                     <tb>
                         <select class="box" id="category" name="category" required>
                         </select>
-
                     </tb>
                 </p>
             </td>
@@ -98,6 +96,8 @@
         <tr>
             <td>
                 <button name="testlink">テストページ</button>
+                <input type="button" id="get_cookie" value="Cookie" onclick="getcookie()">
+                <input type="button" id="del_cookie" value="Delete" onclick="deleteCookie()">
             </td>
         </tr>
     </table>
