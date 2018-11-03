@@ -34,7 +34,7 @@ public class CallbackV2 {
 
     // 確認フォームテンプレ(非対応メッセージ用)
     public ConfirmTemplate confirmTemplateM1(String text) {
-        Action left = new PostbackAction("はい","MY");
+        Action left = new URIAction("はい", "line://app/LIFFid");
         Action right = new PostbackAction("いいえ","MN");
         return new ConfirmTemplate(text,left,right);
     }
@@ -42,7 +42,7 @@ public class CallbackV2 {
     // 確認フォームテンプレ(LIFF対応用)
     public ConfirmTemplate confirmTemplateLIFF(String text) {
         //Action left = new PostbackAction("はい","LY");
-        Action left = new URIAction("はい", "LIFFのURI");
+        Action left = new URIAction("はい", "line://app/LIFFid");
         Action right = new PostbackAction("いいえ","LN");
         return new ConfirmTemplate(text,left,right);
     }
@@ -106,18 +106,12 @@ public class CallbackV2 {
         String data = pbc.getData();
 
         // 確認フォームのボタンに対するアクション
-        if("MY".equals(data)) {
-
-            return reply("LIFFのURI");
-
-        } else if("MN".equals(data)) {
-
+        if("MN".equals(data)) {
             return reply("画面下の「報告フォーム」から報告ができます。");
 
         } else if("LN".equals(data)) {
-
+            // 送信完了時にLIFFのCookieを削除する?
             return reply("報告を送信しました。（仮）\nありがとうございます。");
-
         } else {
 
             return reply("どうすることもできんゾ : data -> " + data);
