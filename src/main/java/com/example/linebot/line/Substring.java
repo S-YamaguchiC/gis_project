@@ -9,7 +9,7 @@ public class Substring {
         // substring var(4 chars)
         String[] sub = new String[4];
 
-        // split for break(ex. AB:C, D:EF, :GHI...)
+        // Separate by line breaks(ex. AB:C, D:EF, :GHI...)
         String[] split = str.split("\n");
 
         // (ex. C, EF, GHI...)
