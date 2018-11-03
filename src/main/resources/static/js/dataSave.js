@@ -22,7 +22,7 @@ function load_cookie() {
         //セレクトメニュー
         document.report.type[data[1]].selected = true;
         document.report.category[data[2]].selected=true;
-        alert("wwwww");
+        //alert("wwwww");
         //チェックボックス
         //document.form1.checkBox.checked = data[2];
         //ラジオボタン
@@ -39,7 +39,7 @@ function save_cookie() {
     //セレクトメニュー
     c_data += document.report.type.selectedIndex + c_split;
     c_data += document.report.category.selectedIndex + c_split;
-    alert("asasa");
+    //alert("asasa");
     //チェックボックス
     //c_data += document.form1.checkBox.checked + c_split;
     //ラジオボタン
@@ -83,4 +83,29 @@ function saveCookie(c_name,c_data,c_day) {
     c_limit = c_date.toGMTString();
     //cookieの書き出し
     document.cookie = c_name + "=" + escape(c_data) + "; expires=" + c_limit;
+}
+
+// 削除するときに呼ばれるメソッド
+function deleteCookie() {
+    alert("delete");
+    document.cookie = "sample_cookie=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
+}
+
+function getcookie() {
+    alert(document.cookie);
+}
+
+// 値自体をNULLにして戻す方法
+// * Cookieのname属性がそもそも一つしか無いため
+function deleteCookie2() {
+    console.log("delete");
+
+    // 値を空文字にしてしまう
+    var c_data = load_cookie(c_name);
+    //データがある場合
+    var data = c_data.split(c_split);
+    data[0] = "";
+    data[1] = "";
+    data[2] = "";
 }
