@@ -2,6 +2,9 @@ package com.example.linebot.web;
 
 import com.example.linebot.dao.ReportDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -11,26 +14,47 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletException;
 import java.io.*;
 import java.sql.SQLException;
 
-
+@EnableCaching // cache使うため
 @Controller
 public class LIFFController {
 
     @Autowired
     ReportDao reportDao;
+    UserCache cache;
 
     @GetMapping("/liff")
     public String hello(Model model) {
-        // [[${test}]] の部分を Hello... で書き換えて、liff.htmlを表示する
-
         //Project route
         String dir = System.getProperty("user.dir");
         System.out.println("ルート：" + dir);
 
         model.addAttribute("test", "報告フォーム");
+//        model.addAttribute("c_type", cache.getC_Type());
+//        model.addAttribute("c_category", cache.getC_Category());
+//        model.addAttribute("c_detail", cache.getC_Detail());
         return "liff";
+    }
+
+    /*
+    * Spring cacheで種別・内容・詳細を保存する
+    * key -> LINE_id
+    * */
+    @Cacheable(value="liffCache", key="#lineid")
+    public void setCache(String lineid, String type, String category, String detail) {
+        System.out.println("insert");
+        cache.insertCache(type, category, detail);
+    }
+
+    /*
+    * LINE_idをkeyとしてSpring cacheを削除
+    * */
+    @CacheEvict(cacheNames="liffCache", key = "#lineid")
+    public void deleteCache(String lineid) {
+        System.out.println("delete");
     }
 
 
