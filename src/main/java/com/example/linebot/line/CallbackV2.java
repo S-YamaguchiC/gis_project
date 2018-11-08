@@ -1,6 +1,7 @@
 package com.example.linebot.line;
 
 import com.example.linebot.Report;
+import com.example.linebot.web.LIFFController;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.action.Action;
 import com.linecorp.bot.model.action.PostbackAction;
@@ -16,13 +17,18 @@ import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
 @LineMessageHandler
 public class CallbackV2 {
 
-    Report report = new Report();
+    Report report  = new Report();
+
+    // Spring cache用
+    @Autowired
+    LIFFController controller;
 
     @Autowired
     private LineMessagingClient lineMessagingClient;
@@ -34,7 +40,7 @@ public class CallbackV2 {
 
     // 確認フォームテンプレ(非対応メッセージ用)
     public ConfirmTemplate confirmTemplateM1(String text) {
-        Action left = new URIAction("はい", "line://app/LIFFid");
+        Action left = new URIAction("はい", "line://app/1596332300-P5e9377Y");
         Action right = new PostbackAction("いいえ","MN");
         return new ConfirmTemplate(text,left,right);
     }
@@ -42,7 +48,7 @@ public class CallbackV2 {
     // 確認フォームテンプレ(LIFF対応用)
     public ConfirmTemplate confirmTemplateLIFF(String text) {
         //Action left = new PostbackAction("はい","LY");
-        Action left = new URIAction("はい", "line://app/LIFFid");
+        Action left = new URIAction("はい", "line://app/1596332300-P5e9377Y");
         Action right = new PostbackAction("いいえ","LN");
         return new ConfirmTemplate(text,left,right);
     }
@@ -104,6 +110,8 @@ public class CallbackV2 {
 
         // ボタンで選んだやつを取ってくる
         String data = pbc.getData();
+        // UserId
+        String userId = event.getSource().getUserId();
 
         // 確認フォームのボタンに対するアクション
         if("MN".equals(data)) {
@@ -111,6 +119,10 @@ public class CallbackV2 {
 
         } else if("LN".equals(data)) {
             // 送信完了時にLIFFのCookieを削除する?
+            // 消す=="true"  消さない=="false"
+            // すでにtrueだったらfalseに変更？もしくはCache削除
+            controller.putCache(userId, "true");
+
             return reply("報告を送信しました。（仮）\nありがとうございます。");
         } else {
 
