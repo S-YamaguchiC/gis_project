@@ -87,6 +87,8 @@
             <input type="hidden" name="lat" id="lat" value="Latitude">
             <input type="hidden" name="lng" id="lng" value="Longitude">
             <input type="hidden" name="lineId" id="lineId" value="LineId">
+            <!--JSでCacheをどうのこうのするためのHIDDEN-->
+            <input type="text" th:text="${flag}" name="flag" value="false">
         </tr>
         <tr>
             <td>
