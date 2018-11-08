@@ -15,6 +15,11 @@ var longitude = "lng";
 
 window.onload = function(e) {
 
+    // ここでCookieを消す？
+    if (document.report.flag.value = "true") {
+        deleteCookie();
+    }
+
     //初期設定
     drawMap();
     changeSelect();
@@ -50,7 +55,7 @@ function drawMap() {
 
     function onLocationError(e) {
         //alert("現在地を取得できませんでした。\nブラウザまたは本体の位置情報設定を見直してください。" + e.message);
-        alert("現在の位置情報が取得できないため、\n現在位置を\"千歳駅\"に設定します。")
+        alert("現在の位置情報が取得できないため、\n現在位置を\"千歳駅\"に設定します。");
         marker = L.marker([ 42.8281,141.652328]).addTo(mymap).bindPopup("千歳駅").openPopup();
         newLat = 42.8281;
         newLon = 141.652328;
