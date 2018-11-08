@@ -3,6 +3,7 @@ package com.example.linebot.web;
 import com.example.linebot.dao.ReportDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletException;
 import java.io.*;
 import java.sql.SQLException;
 
@@ -24,7 +24,8 @@ public class LIFFController {
 
     @Autowired
     ReportDao reportDao;
-    UserCache cache;
+
+    static String flag = "false";
 
     @GetMapping("/liff")
     public String hello(Model model) {
@@ -33,6 +34,8 @@ public class LIFFController {
         System.out.println("ルート：" + dir);
 
         model.addAttribute("test", "報告フォーム");
+        model.addAttribute("flag", flag);
+        System.out.println("flag -> " + flag);
 //        model.addAttribute("c_type", cache.getC_Type());
 //        model.addAttribute("c_category", cache.getC_Category());
 //        model.addAttribute("c_detail", cache.getC_Detail());
@@ -44,9 +47,18 @@ public class LIFFController {
     * key -> LINE_id
     * */
     @Cacheable(value="liffCache", key="#lineid")
-    public void setCache(String lineid, String type, String category, String detail) {
+    public void setCache(String lineid, String tf) {
         System.out.println("insert");
-        cache.insertCache(type, category, detail);
+    }
+
+    /*
+    * Spring cacheの値を更新する
+    * */
+    @CachePut(value = "liffCache", key = "#lineid")
+    public void putCache(String lineid, String tf) {
+        System.out.println("put");
+        flag = tf;
+        System.out.println("flag -> " + flag);
     }
 
     /*
