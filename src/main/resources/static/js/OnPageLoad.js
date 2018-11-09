@@ -16,7 +16,7 @@ var longitude = "lng";
 window.onload = function(e) {
 
     // ここでCookieを消す？
-    if (document.report.flag.value = "true") {
+    if (document.report.flag.value === "true") {
         deleteCookie();
     }
 
@@ -84,13 +84,24 @@ function drawMap() {
 
 //--------------------------------------------------------------------------------------------------------------------
 //選択肢の制御
-function changeSelect() {
+function changeSelect(flag) {
     var select1 = document.forms.report.type; //変数select1を宣言
     var select2 = document.forms.report.category; //変数select2を宣言
 
     select2.options.length = 0; // 選択肢の数がそれぞれに異なる場合、これが重要
-
-    if (select1.options[select1.selectedIndex].value == "舗装") {
+    //もしcookieから読み込まれた場合　初期のselect1のvalueはnullになっている
+    //のでcookieが読み込まれた時のselect1を指定
+    if(select1.options[select1.selectedIndex].value == ""){
+        if(flag=="舗装"){
+            select1.options[select1.selectedIndex].value=="舗装"
+        }else if(flag=="除雪") {
+            select1.options[select1.selectedIndex].value == "除雪"
+        }else if(flag=="その他") {
+            select1.options[select1.selectedIndex].value == "その他"
+        }
+    }
+    //その後読み込み
+    else if (select1.options[select1.selectedIndex].value == "舗装") {
         select2.options[0] = new Option("道路に穴が空いています");
         select2.options[1] = new Option("道路が爆発しています");
         select2.options[2] = new Option("その他");
