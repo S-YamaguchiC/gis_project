@@ -25,7 +25,7 @@ public class LIFFController {
     @Autowired
     ReportDao reportDao;
 
-    static String flag = "false";
+    String flag = "false";
 
     @GetMapping("/liff")
     public String hello(Model model) {
@@ -33,12 +33,17 @@ public class LIFFController {
         String dir = System.getProperty("user.dir");
         System.out.println("ルート：" + dir);
 
+        System.out.println("LIFF起動時 flag -> " + flag);
+
         model.addAttribute("test", "報告フォーム");
         model.addAttribute("flag", flag);
-        System.out.println("flag -> " + flag);
-//        model.addAttribute("c_type", cache.getC_Type());
-//        model.addAttribute("c_category", cache.getC_Category());
-//        model.addAttribute("c_detail", cache.getC_Detail());
+        //ここでflag==trueのときfalseに戻す？
+        if( flag.equals("true") ) {
+            // ここでaddAttributeしたあとにflagを戻す文追加
+            flag = "false";
+        }
+        System.out.println("LIFF起動後 flag -> " + flag);
+
         return "liff";
     }
 
