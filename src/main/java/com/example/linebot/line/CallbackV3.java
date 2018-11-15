@@ -115,8 +115,16 @@ public class CallbackV3 {
         if (text.startsWith("種別：")) {
 
             Substring substring = new Substring();
-            ArrayList<String> arrayList = substring.getString(text);
+            ArrayList<String> arrayList;
 
+            try {
+                // 受け取った文字列の分割
+                arrayList = substring.getString(text);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                return reply("さてはオメー、タダ者じゃねえな？");
+            }
+
+            // 開発用：ArrayListの中身表示
             for (String s : arrayList) {
                 System.out.println(s);
             }
@@ -124,7 +132,7 @@ public class CallbackV3 {
             try {
                 // 緯度経度を分割
                 ArrayList<String> latlng = substring.getLatLng(arrayList.get(3));
-                // ほかクラスに保存
+                // Report(DBに保存する値の格納クラス)に値を渡す
                 report.setType(arrayList.get(0));
                 report.setCategory(arrayList.get(1));
                 report.setDetail(arrayList.get(2));
