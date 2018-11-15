@@ -1,6 +1,7 @@
 package com.example.linebot.line;
 
-import com.example.linebot.web.sub.Report;
+import com.example.linebot.dao.ReportDao;
+import com.example.linebot.web.Report;
 import com.example.linebot.line.sub.Callback;
 import com.example.linebot.web.LIFFController;
 import com.linecorp.bot.client.LineMessagingClient;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +42,9 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class CallbackV3 {
 
     Report report  = new Report();
+
+    @Autowired
+    ReportDao reportDao;
 
     // Spring cache用
     @Autowired
@@ -161,7 +166,11 @@ public class CallbackV3 {
             // すでにtrueだったらfalseに変更？もしくはCache削除
             controller.putCache(userId, "true");
             // DBにぶちこみ
-
+            try {
+                reportDao.insert(report.getType(), report.getCategory(), report.getDetail(), report.getLatitude(), report.getLongitude());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             return reply("報告を送信しました。（仮）\nありがとうございます。");
         } else if("IY".equals(data)) {
             // 画像を保存してLIFF起動
