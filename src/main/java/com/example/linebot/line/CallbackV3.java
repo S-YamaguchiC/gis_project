@@ -138,6 +138,8 @@ public class CallbackV3 {
                 report.setDetail(arrayList.get(2));
                 report.setLatitude(latlng.get(0));
                 report.setLongitude(latlng.get(1));
+                // LINEidを取得
+                report.setLineId(event.getSource().getUserId());
 
             } catch (ArrayIndexOutOfBoundsException e) {
                 e.printStackTrace();
