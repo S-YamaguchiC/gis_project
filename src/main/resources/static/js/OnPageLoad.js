@@ -44,6 +44,29 @@ function drawMap() {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, '
     }).addTo(mymap);
 
+    // 検索機能ボタン
+    var option = {
+        position: 'topright', // topright, topleft, bottomright, bottomleft
+        text: '検索',
+        placeholder: '検索条件を入力してください。'
+    };
+    var osmGeocoder = new L.Control.OSMGeocoder(option);
+    mymap.addControl(osmGeocoder);
+
+    // // 現在位置取得ボタン
+    // // Locate
+    // var curLocation = {
+    //     position: 'bottomright',
+    //     strings: {
+    //         title: "現在地を表示",
+    //         popup: "いまここ"
+    //     },
+    //     locateOptions: {
+    //         maxZoom: 16
+    //     }
+    // };
+    // L.control.locate(curLocation).addTo(mymap);
+
 
     function onLocationFound(e) {
         //現段階（10月ではまだ住所変換できてないので緯度・経度のまま）
@@ -94,6 +117,16 @@ function changeSelect(flag) {
     if(select1.options[select1.selectedIndex].value == ""){
         if(flag=="舗装"){
             select1.options[select1.selectedIndex].value=="舗装"
+        }else if(flag=="照明等"){
+            select1.options[select1.selectedIndex].value=="照明等"
+        }else if(flag=="道路付属物"){
+            select1.options[select1.selectedIndex].value=="道路付属物"
+        }else if(flag=="雨水・排水"){
+            select1.options[select1.selectedIndex].value=="雨水・排水"
+        }else if(flag=="小動物の死骸"){
+            select1.options[select1.selectedIndex].value=="小動物の市街"
+        }else if(flag=="樹木・雑草"){
+            select1.options[select1.selectedIndex].value=="樹木・雑草"
         }else if(flag=="除雪") {
             select1.options[select1.selectedIndex].value == "除雪"
         }else if(flag=="その他") {
@@ -106,14 +139,27 @@ function changeSelect(flag) {
         select2.options[1] = new Option("道路が爆発しています");
         select2.options[2] = new Option("その他");
     }
-
+    else if(select1.options[select1.selectedIndex].value=="照明等"){
+        select2.options[0] = new Option("不明");
+    }
+    else if(select1.options[select1.selectedIndex].value=="道路付属物"){
+        select2.options[0] = new Option("不明！");
+    }
+    else if(select1.options[select1.selectedIndex].value=="雨水・排水"){
+        select2.options[0] = new Option("不明？");
+    }
+    else if(select1.options[select1.selectedIndex].value=="小動物の死骸"){
+        select2.options[0] = new Option("不明！？");
+    }
+    else if(select1.options[select1.selectedIndex].value=="樹木・雑草"){
+        select2.options[0] = new Option("不明？？");
+    }
     else if (select1.options[select1.selectedIndex].value == "除雪") {
         select2.options[0] = new Option("雪の山で見通しが悪いんだよね");
         select2.options[1] = new Option("歩道がもはや存在しない");
         select2.options[2] = new Option("除雪して（切実）");
         select2.options[3] = new Option("その他");
     }
-
     else if (select1.options[select1.selectedIndex].value == "その他") {
         select2.options[0] = new Option("お腹痛い");
         select2.options[1] = new Option("眠い");
@@ -248,7 +294,6 @@ function sendMessage() {
         + "内容：" + category + "\n"
         + "詳細：" + detail + "\n"
         + "緯度 / 経度：" + latitude + " / " + longitude;
-
         //alert('send click');
     if (navigator.userAgent.indexOf("Line") !== -1) {
         //alert('Agent: LINE');
@@ -270,3 +315,14 @@ function sendMessage() {
 }
 
 //-------------------------------------------------------------------------------------------------------------------
+
+/* 画像をトークに流すコード
+* ,
+            {
+                type: 'image',
+                originalContentUrl: 'https://puu.sh/C1nXK/5a48f5c50b.jpg', // 1024x1024 1MB
+                previewImageUrl: 'https://puu.sh/C1nXp/56323b0e38.jpg'     // 240x240   1MB
+            }
+*
+*
+* */
