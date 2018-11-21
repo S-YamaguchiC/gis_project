@@ -43,6 +43,9 @@ public class CallbackV3 {
 
     Report report  = new Report();
 
+    //ボタンテンプレのボタンを二回押さないようにするflag
+    private int flag2;
+
     @Autowired
     ReportDao reportDao;
 
@@ -66,7 +69,7 @@ public class CallbackV3 {
 
     // 確認フォームテンプレ(非対応メッセージ用)
     public ConfirmTemplate confirmTemplateM1(String text) {
-        Action left = new URIAction("はい", "line://app/1596332300-PV7qvxxl");
+        Action left = new URIAction("はい", "line://app/1596332300-YNnbBEEO");
         Action right = new PostbackAction("いいえ","MN");
         return new ConfirmTemplate(text,left,right);
     }
@@ -74,7 +77,9 @@ public class CallbackV3 {
     // 確認フォームテンプレ(LIFF対応用)
     public ConfirmTemplate confirmTemplateLIFF(String text) {
         //Action left = new PostbackAction("はい","LY");
-        Action left = new URIAction("はい", "line://app/1596332300-PV7qvxxl");
+        //LIFFの修正確認をロード時に flag2=1にする
+        flag2 = 1;
+        Action left = new URIAction("はい", "line://app/1596332300-YNnbBEEO");
         Action right = new PostbackAction("いいえ","LN");
         return new ConfirmTemplate(text,left,right);
     }
@@ -93,7 +98,7 @@ public class CallbackV3 {
         String thumbnailImageUrlCavet = "https://puu.sh/BbfNS/c2fa6e5411.jpg";
         String thumbnailImageUrlSiokawa = "https://puu.sh/C1nXK/5a48f5c50b.jpg";
         //種別の選択肢
-        Action a = new URIAction("ENTER", "line://app/1596332300-PV7qvxxl");
+        Action a = new URIAction("ENTER", "line://app/1596332300-YNnbBEEO");
         //種別のリスト
         List<Action> actions = Arrays.asList(a);
         //ユーザーに選択させるときのボタンテンプレ
@@ -176,12 +181,28 @@ public class CallbackV3 {
             // すでにtrueだったらfalseに変更？もしくはCache削除
             controller.putCache(userId, "true");
             // DBにぶちこみ
-            try {
-                reportDao.insert(report.getType(), report.getCategory(), report.getDetail(), report.getLatitude(), report.getLongitude());
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if (flag2 == 1) {
+                controller.putCache(userId, "true");
+                // DBにぶちこみ
+                try {
+                    reportDao.insert(
+                            report.getType(),
+                            report.getCategory(),
+                            report.getDetail(),
+                            report.getLatitude(),
+                            report.getLongitude()
+                    );
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                //flag2を0にする　以降、報告内容のボタンテンプレメッセージが送られない限り何もしない
+                flag2 = 0;
+                return reply("報告を送信しました。（仮）\nありがとうございます。");
+            } else {
+                //何もしない 警告出るけど問題ない(はず)
+                return reply("送信済みなんだから\nそういうことするのやめなさいよあんた");
             }
-            return reply("報告を送信しました。（仮）\nありがとうございます。");
+
         } else if("IY".equals(data)) {
             // 画像を保存してLIFF起動
             getImageContent();
