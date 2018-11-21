@@ -7,8 +7,8 @@ public class Report {
     * これをDBに入れるで
     * */
     private String lineId; //LINEid
-    private String type;   //種別
-    private String category;   //内容
+    private int type;   //種別
+    private int category;   //内容
     private String detail =""; //詳細
     private String latitude ="";
     private String longitude ="";
@@ -21,11 +21,11 @@ public class Report {
         this.lineId = lineId;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 
@@ -45,9 +45,9 @@ public class Report {
 
     public String getLineId() { return this.lineId; }
 
-    public String getType(){ return this.type; }
+    public int getType(){ return this.type; }
 
-    public String getCategory(){ return this.category; }
+    public int getCategory(){ return this.category; }
 
     public String getDetail(){ return this.detail; }
 
