@@ -1,6 +1,7 @@
 package com.example.linebot.line;
 
 import com.example.linebot.dao.ReportDao;
+import com.example.linebot.web.ConvertId;
 import com.example.linebot.web.Report;
 import com.example.linebot.line.sub.Callback;
 import com.example.linebot.web.LIFFController;
@@ -113,6 +114,9 @@ public class CallbackV3 {
     @EventMapping
     public Message handleMessage(MessageEvent<TextMessageContent> event) {
 
+        // Converter
+        ConvertId convertId = new ConvertId();
+
         TextMessageContent tmc = event.getMessage();
         String text = tmc.getText();
 
@@ -138,8 +142,8 @@ public class CallbackV3 {
                 // 緯度経度を分割
                 ArrayList<String> latlng = substring.getLatLng(arrayList.get(3));
                 // Report(DBに保存する値の格納クラス)に値を渡す
-                report.setType(arrayList.get(0));
-                report.setCategory(arrayList.get(1));
+                report.setType(convertId.convertGenre(arrayList.get(0)));   // 文字列を対応するID(int)に変換
+                report.setCategory(convertId.convertTmpl(arrayList.get(1))); // 文字列を対応するID(int)に変換
                 report.setDetail(arrayList.get(2));
                 report.setLatitude(latlng.get(0));
                 report.setLongitude(latlng.get(1));
