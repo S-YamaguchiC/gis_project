@@ -11,12 +11,12 @@ import java.sql.*;
 @Transactional
 public class ReportDaoImpl implements ReportDao {
 
-    public static final String URL ="jdbc:postgresql://localhost:5432/****";
-    public static final String USER_ID = "****";
-    public static final String PASSWD = "****";
+    public static final String URL ="jdbc:postgresql://localhost:5432/postgres";
+    public static final String USER_ID = "*****";
+    public static final String PASSWD = "*****";
 
     @Override
-    public void insert(String type, String category, String detail, String latitude, String longitude)
+    public void insert(int type, int category, String detail, String latitude, String longitude)
             throws SQLException {
 
         String sql = "insert into test_db (type, category, detail, location_lat, location_lng) values (?,?,?,?,?)";
@@ -25,8 +25,8 @@ public class ReportDaoImpl implements ReportDao {
 
             try ( PreparedStatement ppst = conn.prepareStatement(sql) ) {
 
-                ppst.setString(1, type);
-                ppst.setString(2, category);
+                ppst.setInt(1, type);
+                ppst.setInt(2, category);
                 ppst.setString(3, detail);
                 ppst.setString(4, latitude);
                 ppst.setString(5, longitude);

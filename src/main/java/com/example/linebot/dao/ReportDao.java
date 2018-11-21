@@ -5,5 +5,5 @@ import java.sql.SQLException;
 public interface ReportDao {
 
     //登録(画像なし)
-    void insert(String type, String category, String detail, String latitude, String longitude) throws SQLException;
+    void insert(int type, int category, String detail, String latitude, String longitude) throws SQLException;
 }
