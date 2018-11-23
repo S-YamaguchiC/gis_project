@@ -1,6 +1,6 @@
 package com.example.linebot.web;
 
-public class Report {
+public class ReportBean {
 
     /*
     * 値を保存しておくで
@@ -12,6 +12,7 @@ public class Report {
     private String detail =""; //詳細
     private String latitude ="";
     private String longitude ="";
+    private String accountId ="";
 
 
     public String flag;
@@ -43,6 +44,8 @@ public class Report {
 
     public void setFlag(String flag) { this.flag = flag; }
 
+    public void setAccountId(String accountId) { this.accountId = accountId; }
+
     public String getLineId() { return this.lineId; }
 
     public int getType(){ return this.type; }
@@ -56,5 +59,7 @@ public class Report {
     public String getLongitude(){ return this.longitude; }
 
     public String getFlag() { return this.flag; }
+
+    public String getAccountId() { return this.accountId; }
 
 }
