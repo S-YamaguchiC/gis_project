@@ -2,7 +2,7 @@ package com.example.linebot.line;
 
 import com.example.linebot.dao.ReportDao;
 import com.example.linebot.web.ConvertId;
-import com.example.linebot.web.Report;
+import com.example.linebot.web.ReportBean;
 import com.example.linebot.line.sub.Callback;
 import com.example.linebot.web.LIFFController;
 import com.linecorp.bot.client.LineMessagingClient;
@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +41,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 @LineMessageHandler
 public class CallbackV3 {
 
-    Report report  = new Report();
+    ReportBean report  = new ReportBean();
 
     //ボタンテンプレのボタンを二回押さないようにするflag
     private int flag2;
@@ -188,17 +187,16 @@ public class CallbackV3 {
             if (flag2 == 1) {
                 controller.putCache(userId, "true");
                 // DBにぶちこみ
-                try {
-                    reportDao.insert(
-                            report.getType(),
-                            report.getCategory(),
-                            report.getDetail(),
-                            report.getLatitude(),
-                            report.getLongitude()
-                    );
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                // select文でLINEidの確認
+                if (!reportDao.existLineAccount(userId)) {
+                    // DB内のidの最大値
+                    int num = reportDao.getMaxId();
+                    // DBに userId を insert
+                    reportDao.insertAccountId(num, 2);
+                    reportDao.registerLine(num, userId);
                 }
+                // DBに報告を送信
+                reportDao.insertContribution(report);
                 //flag2を0にする　以降、報告内容のボタンテンプレメッセージが送られない限り何もしない
                 flag2 = 0;
                 return reply("報告を送信しました。（仮）\nありがとうございます。");
