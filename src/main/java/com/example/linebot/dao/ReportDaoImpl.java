@@ -1,13 +1,15 @@
 package com.example.linebot.dao;
 
 import com.example.linebot.web.ReportBean;
-import lombok.val;
 import org.postgresql.geometric.PGcircle;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /*
 * 現行システムの " ContributionDAO.java" にあたるクラス
@@ -50,36 +52,51 @@ public class ReportDaoImpl extends AbstractDAO implements ReportDao {
         }
     }
 
+    /**?
+     * 画像のパスを保存して、そのときの contribution_id を次の insertContribution メソッドに渡す
+     */
+    @Override
+    public boolean insertContributionImage(ReportBean report) {
+        String sql = "insert into contribution_picture(contribution_id, picture_save_path) values (?,?)";
+        if (jdbc.update(sql, report.getContribution_id(), report.getImagePath()) == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     // 現行用
     /**?
      * 投稿の追加
+     * ※genre : よく見たら文字列で検索してIDで入れてた...IDに変換してしまったので直で入れる
      * @param report    Beanクラス
      * @return
      */
     @Override
-    public long insertContribution(ReportBean report) {
-        long contributionId = 0;
+    public boolean insertContribution(ReportBean report) {
         String contributionInsertSql = "insert into contribution(genre_id, contribution_template_id, supplement, account_id, post_time, latlon, progress_id, available) "
-                + "values((select genre_id from genre where genre = :genre), "
-                + "(select contribution_template_id from contribution_template where contribution_template = :contributionTemplate), "
-                + ":supplement, :accountId , :postTime, :latlon, "
-                + "(select progress_id from progress where progress = 'UNCONFIRMED'), :available) returning contribution_id";
+                + "values(?, ?, ?, " +
+                "(select account_id from line_auth where line_id = ?)," +
+                " ?, ?, " +
+                "(select progress_id from progress where progress = 'UNCONFIRMED'), ?)";
 
-        try (val conn = dbcp.getSql2o().open()) {
-            contributionId = conn.createQuery(contributionInsertSql)
-                    .addParameter("genre", report.getType())
-                    .addParameter("supplement", report.getDetail())
-                    .addParameter("contributionTemplate", report.getCategory())
-                    .addParameter("accountId", report.getAccountId())
-                    .addParameter("postTime", "")   // 投稿日時をどっかから
-                    .addParameter("latlon", new PGcircle(Double.parseDouble(report.getLongitude()), Double.parseDouble(report.getLatitude()), 0d))
-                    .addParameter("available", true)
-                    .executeScalar(Long.class);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        String intsql = "select lastval()";
+
+        if (jdbc.update(contributionInsertSql,
+                report.getType(),
+                report.getCategory(),
+                report.getDetail(),
+                report.getLineId(),
+                report.getPostTime(),
+                new PGcircle(report.getLongitude(), report.getLatitude(), 0d),
+                true
+        ) == 1) {
+            // 直近の報告IDを取得
+            report.setContribution_id(jdbc.queryForObject(intsql, Integer.class));
+            return true;
+        } else {
+            return false;
         }
-        return contributionId;
     }
 
     /**
@@ -87,12 +104,11 @@ public class ReportDaoImpl extends AbstractDAO implements ReportDao {
      * */
     @Override
     public boolean existLineAccount(String lineId) {
-        // ヤバそう
         String sql = "select count(line_id) from line_auth "
-                + "where line_id = '" + lineId + "'";
+                + "where line_id = ?";
 
         // booleanでいいかもしれない
-        if (jdbc.queryForObject(sql, Integer.class) == 1){
+        if (jdbc.queryForObject(sql, Integer.class, lineId) == 1){
             // IDが存在したとき
             return true;
         } else {
