@@ -16,9 +16,14 @@ public interface ReportDao {
     void insert(int type, int category, String detail, String latitude, String longitude) throws SQLException;
 
     /**
+     * 引数をもとにDBに画像のパスを保存s
+     * */
+    boolean insertContributionImage(ReportBean report);
+
+    /**
      * 引数をcontributionテーブルにinsertする
      */
-    long insertContribution(ReportBean report);
+    boolean insertContribution(ReportBean report);
 
     /**
     * 引数をもとにline_idが存在するか確認する
