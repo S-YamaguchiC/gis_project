@@ -1,19 +1,22 @@
 package com.example.linebot.web;
 
+import java.time.LocalDateTime;
+
 public class ReportBean {
 
     /*
     * 値を保存しておくで
     * これをDBに入れるで
     * */
+    private int contribution_id;
     private String lineId; //LINEid
     private int type;   //種別
     private int category;   //内容
     private String detail =""; //詳細
-    private String latitude ="";
-    private String longitude ="";
+    private double latitude;
+    private double longitude;
     private String accountId ="";
-
+    private String imagePath="";
 
     public String flag;
 
@@ -34,17 +37,19 @@ public class ReportBean {
         this.detail = detail;
     }
 
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
+    public void setLatitude(String latitude) { this.latitude = Double.parseDouble(latitude); }
 
     public void setLongitude(String longitude) {
-        this.longitude = longitude;
+        this.longitude = Double.parseDouble(longitude);
     }
 
     public void setFlag(String flag) { this.flag = flag; }
 
     public void setAccountId(String accountId) { this.accountId = accountId; }
+
+    public void setImagePath(String path) { this.imagePath = path; }
+
+    public void setContribution_id(int id){ this.contribution_id = id; }
 
     public String getLineId() { return this.lineId; }
 
@@ -54,12 +59,24 @@ public class ReportBean {
 
     public String getDetail(){ return this.detail; }
 
-    public String getLatitude(){ return this.latitude; }
+    public double getLatitude(){ return this.latitude; }
 
-    public String getLongitude(){ return this.longitude; }
+    public double getLongitude(){ return this.longitude; }
 
     public String getFlag() { return this.flag; }
 
     public String getAccountId() { return this.accountId; }
+
+    public String getImagePath() { return this.imagePath; }
+
+    public int getContribution_id() { return this.contribution_id; }
+
+    /**
+     * civic-mapのimportができないので代替
+     * 本家と違って変数を用意していない
+     * */
+    public LocalDateTime getPostTime() { return LocalDateTime.now(); }
+
+    public LocalDateTime getLastUpdateTime() { return LocalDateTime.now(); }
 
 }
