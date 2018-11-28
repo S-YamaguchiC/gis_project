@@ -1,10 +1,10 @@
 package com.example.linebot.line;
 
 import com.example.linebot.dao.ReportDao;
-import com.example.linebot.web.ConvertId;
-import com.example.linebot.web.ReportBean;
 import com.example.linebot.line.sub.Callback;
+import com.example.linebot.web.ConvertId;
 import com.example.linebot.web.LIFFController;
+import com.example.linebot.web.ReportBean;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.client.MessageContentResponse;
 import com.linecorp.bot.model.action.Action;
@@ -26,10 +26,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -197,6 +199,10 @@ public class CallbackV3 {
                 }
                 // DBに報告を送信
                 reportDao.insertContribution(report);
+                // PathをDBに送信
+                if (report.getImagePath() != null) reportDao.insertContributionImage(report);
+                // 画像のパスを初期化
+                report.setImagePath("");
                 //flag2を0にする　以降、報告内容のボタンテンプレメッセージが送られない限り何もしない
                 flag2 = 0;
                 return reply("報告を送信しました。（仮）\nありがとうございます。");
@@ -257,13 +263,28 @@ public class CallbackV3 {
     // また保存先のファイルパスをOptional型で返す
     private Optional<String> makeTmpFile(MessageContentResponse resp, String extention) {
 
+        existDir();
         try(InputStream is = resp.getStream()){
-            Path tmpFilePath = Files.createTempFile("linebot", extention);
+            Path tmpFilePath = Files.createTempFile(Paths.get("C:/linebot-image"),"linebot", extention);
             Files.copy(is, tmpFilePath,REPLACE_EXISTING);
+            // パスをセット
+            report.setImagePath(tmpFilePath.toString());
             return Optional.ofNullable(tmpFilePath.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
         return Optional.empty();
+    }
+
+    // 画像保存ディレクトリの存在チェック
+    private void existDir() {
+        File file = new File("c:\\linebot-image");
+        if (file.exists()) {
+            System.out.println("ファイルは存在します。");
+        } else {
+            System.out.println("ファイルは存在しません。");
+            file.mkdir();
+            System.out.println("mkdir -> " + file.getPath());
+        }
     }
 }
