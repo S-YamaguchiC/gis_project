@@ -53,21 +53,6 @@ function drawMap() {
     var osmGeocoder = new L.Control.OSMGeocoder(option);
     mymap.addControl(osmGeocoder);
 
-    // // 現在位置取得ボタン
-    // // Locate
-    // var curLocation = {
-    //     position: 'bottomright',
-    //     strings: {
-    //         title: "現在地を表示",
-    //         popup: "いまここ"
-    //     },
-    //     locateOptions: {
-    //         maxZoom: 16
-    //     }
-    // };
-    // L.control.locate(curLocation).addTo(mymap);
-
-
     function onLocationFound(e) {
         //現段階（10月ではまだ住所変換できてないので緯度・経度のまま）
         marker = L.marker(e.latlng).addTo(mymap).bindPopup("現在地\n" + e.latlng).openPopup();
@@ -114,41 +99,41 @@ function changeSelect(flag) {
     select2.options.length = 0; // 選択肢の数がそれぞれに異なる場合、これが重要
     //もしcookieから読み込まれた場合　初期のselect1のvalueはnullになっている
     //のでcookieが読み込まれた時のselect1を指定
-    if(select1.options[select1.selectedIndex].value == ""){
-        if(flag=="舗装"){
-            select1.options[select1.selectedIndex].value=="舗装"
-        }else if(flag=="照明灯"){
-            select1.options[select1.selectedIndex].value=="照明灯"
-        }else if(flag=="道路付属物"){
-            select1.options[select1.selectedIndex].value=="道路付属物"
-        }else if(flag=="雨水・排水"){
-            select1.options[select1.selectedIndex].value=="雨水・排水"
-        }else if(flag=="小動物の死骸"){
-            select1.options[select1.selectedIndex].value=="小動物の市街"
-        }else if(flag=="樹木・雑草"){
-            select1.options[select1.selectedIndex].value=="樹木・雑草"
-        }else if(flag=="除雪") {
-            select1.options[select1.selectedIndex].value == "除雪"
-        }else if(flag=="その他") {
-            select1.options[select1.selectedIndex].value == "その他"
+    if(select1.options[select1.selectedIndex].value === "") {
+        if(flag === "舗装") {
+            select1.options[select1.selectedIndex].value === "舗装";
+        } else if(flag === "照明灯") {
+            select1.options[select1.selectedIndex].value === "照明灯";
+        } else if(flag==="道路付属物") {
+            select1.options[select1.selectedIndex].value === "道路付属物";
+        } else if(flag === "雨水・排水") {
+            select1.options[select1.selectedIndex].value === "雨水・排水";
+        } else if(flag === "小動物の死骸") {
+            select1.options[select1.selectedIndex].value === "小動物の市街";
+        } else if(flag === "樹木・雑草") {
+            select1.options[select1.selectedIndex].value === "樹木・雑草";
+        } else if(flag === "除雪") {
+            select1.options[select1.selectedIndex].value === "除雪";
+        } else if(flag === "その他") {
+            select1.options[select1.selectedIndex].value === "その他";
         }
     }
     //その後読み込み
-    else if (select1.options[select1.selectedIndex].value == "舗装") {
+    else if (select1.options[select1.selectedIndex].value === "舗装") {
         select2.options[0] = new Option("道路に穴が空いています");
         select2.options[1] = new Option("道路がへこんでいて振動します");
         select2.options[2] = new Option("段差があり走りづらいです");
         select2.options[3] = new Option("歩道がでこぼこしていて歩きづらいです");
         select2.options[4] = new Option("その他");
     }
-    else if(select1.options[select1.selectedIndex].value=="照明灯"){
+    else if(select1.options[select1.selectedIndex].value ==="照明灯"){
         select2.options[0] = new Option("照明灯が消えています");
         select2.options[1] = new Option("照明灯に穴が開いています");
         select2.options[2] = new Option("照明灯が錆ついています");
         select2.options[3] = new Option("照明灯が傾いています");
         select2.options[4] = new Option("その他");
     }
-    else if(select1.options[select1.selectedIndex].value=="道路付属物"){
+    else if(select1.options[select1.selectedIndex].value === "道路付属物"){
         select2.options[0] = new Option("ガードパイプが曲がっています");
         select2.options[1] = new Option("標識が曲がっています");
         select2.options[2] = new Option("標識が傾いています");
@@ -156,33 +141,33 @@ function changeSelect(flag) {
         select2.options[4] = new Option("縁石が壊れています");
         select2.options[5] = new Option("その他");
     }
-    else if(select1.options[select1.selectedIndex].value=="雨水・排水"){
+    else if(select1.options[select1.selectedIndex].value === "雨水・排水"){
         select2.options[0] = new Option("雨水が排水されません");
         select2.options[1] = new Option("雨水枡の周りが壊れています");
         select2.options[2] = new Option("いつも水が溜まっています");
         select2.options[3] = new Option("マンホールの周りが壊れています");
         select2.options[4] = new Option("その他");
     }
-    else if(select1.options[select1.selectedIndex].value=="小動物の死骸"){
+    else if(select1.options[select1.selectedIndex].value === "小動物の死骸"){
         select2.options[0] = new Option("動物が車に轢かれています");
         select2.options[1] = new Option("鳥が死んでいます");
         select2.options[2] = new Option("その他");
     }
-    else if(select1.options[select1.selectedIndex].value=="樹木・雑草"){
+    else if(select1.options[select1.selectedIndex].value === "樹木・雑草"){
         select2.options[0] = new Option("雑草が伸びているので確認してください");
         select2.options[1] = new Option("街路樹の枝が伸びているので確認してください");
         select2.options[2] = new Option("樹木が伸びて交差点が見えづらくなっています");
         select2.options[3] = new Option("樹木が枯れています");
         select2.options[4] = new Option("その他");
     }
-    else if (select1.options[select1.selectedIndex].value == "除雪") {
+    else if (select1.options[select1.selectedIndex].value === "除雪") {
         select2.options[0] = new Option("雪山があって見通しが悪い");
         select2.options[1] = new Option("道路が凸凹で走りづらい");
         select2.options[2] = new Option("歩道が歩きづらい");
         select2.options[3] = new Option("砂箱に砂を補充してほしい");
         select2.options[4] = new Option("その他");
     }
-    else if (select1.options[select1.selectedIndex].value == "その他") {
+    else if (select1.options[select1.selectedIndex].value === "その他") {
         select2.options[0] = new Option("その他");
     }
 }
@@ -245,7 +230,7 @@ function inputLocation2(latitude,longitude) {
 //--------------------------------------------------------------------------------------------------------------------
 //現在位置の再取得ボタン用関数
 function setCurLocation(){
-    if (navigator.geolocation == false){
+    if (navigator.geolocation === false){
         alert('現在地を取得できませんでした。\n位置情報の設定を見直してください。');
         return;
     }
@@ -274,10 +259,10 @@ function setCurLocation(){
 //--------------------------------------------------------------------------------------------------------------------
 //地図の表示切り替え
 function Display(no){
-    if(no == "no1"){
+    if(no === "no1"){
         document.getElementById("mapid").style.display = "block";
         document.getElementById("maphide").style.display = "none";
-    }else if(no == "no2"){
+    }else if(no === "no2"){
         document.getElementById("mapid").style.display = "none";
         document.getElementById("maphide").style.display = "block";
     }
@@ -298,11 +283,13 @@ function initApp(data) {
 
     document.getElementById("sendmessagebutton").addEventListener('click', function (ev) {
         type = document.report.type.value;
-        category = document.report.category.value;
-        detail = document.report.detail.value;
-        latitude = newLat;
-        longitude = newLon;
-       sendMessage();
+        if (type !== '') {
+            category = document.report.category.value;
+            detail = document.report.detail.value;
+            latitude = newLat;
+            longitude = newLon;
+            sendMessage();
+        }
     });
 
 }
