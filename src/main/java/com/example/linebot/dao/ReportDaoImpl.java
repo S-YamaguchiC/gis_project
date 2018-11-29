@@ -1,6 +1,6 @@
 package com.example.linebot.dao;
 
-import com.example.linebot.web.ReportBean;
+import com.example.linebot.Bean.ReportBean;
 import org.postgresql.geometric.PGcircle;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,7 +17,7 @@ import java.sql.SQLException;
 
 @Repository
 @Transactional
-public class ReportDaoImpl extends AbstractDAO implements ReportDao {
+public class ReportDaoImpl extends AbstractDAO implements IReportDao {
 
     public static final String URL ="jdbc:postgresql://localhost:5432/postgres";
     public static final String USER_ID = "postgres";

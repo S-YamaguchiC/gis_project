@@ -1,4 +1,4 @@
-package com.example.linebot.web;
+package com.example.linebot.Bean;
 
 import java.time.LocalDateTime;
 

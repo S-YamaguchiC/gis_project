@@ -1,6 +1,6 @@
-package com.example.linebot.web;
+package com.example.linebot.controller;
 
-import com.example.linebot.dao.ReportDao;
+import com.example.linebot.dao.IReportDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.EnableCaching;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class LIFFController {
 
     @Autowired
-    ReportDao reportDao;
+    IReportDao reportDao;
 
     String flag = "false";
 

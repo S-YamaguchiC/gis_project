@@ -1,4 +1,4 @@
-package com.example.linebot.web;
+package com.example.linebot.others;
 
 /*
 * 設計ミスをどうにかするためのクラス

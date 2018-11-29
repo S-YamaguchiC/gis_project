@@ -1,6 +1,6 @@
 package com.example.linebot.dao;
 
-import com.example.linebot.web.ReportBean;
+import com.example.linebot.Bean.ReportBean;
 import com.google.inject.ImplementedBy;
 
 import java.sql.SQLException;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
  * 現行システムの " IContributionDAO.java" にあたるクラス
  * */
 @ImplementedBy(ReportDaoImpl.class)
-public interface ReportDao {
+public interface IReportDao {
 
     // テスト用
     //登録(画像なし)

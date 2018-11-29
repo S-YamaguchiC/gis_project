@@ -1,10 +1,11 @@
 package com.example.linebot.line;
 
-import com.example.linebot.dao.ReportDao;
+import com.example.linebot.dao.IReportDao;
 import com.example.linebot.line.sub.Callback;
-import com.example.linebot.web.ConvertId;
-import com.example.linebot.web.LIFFController;
-import com.example.linebot.web.ReportBean;
+import com.example.linebot.others.ConvertId;
+import com.example.linebot.controller.LIFFController;
+import com.example.linebot.Bean.ReportBean;
+import com.example.linebot.others.Substring;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.client.MessageContentResponse;
 import com.linecorp.bot.model.action.Action;
@@ -49,7 +50,7 @@ public class CallbackV3 {
     private int flag2;
 
     @Autowired
-    ReportDao reportDao;
+    IReportDao reportDao;
 
     // Spring cache用
     @Autowired
