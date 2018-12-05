@@ -1,12 +1,15 @@
 package com.example.linebot.controller;
 
+import com.example.linebot.Bean.ReportBean;
 import com.example.linebot.dao.IReportDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @EnableCaching // cache使うため
 @Controller
@@ -15,30 +18,32 @@ public class LIFFController {
     @Autowired
     IReportDao reportDao;
 
+    @Autowired
+    CacheManager cacheManager;
+
     String flag = "false";
 
     @GetMapping("/liff")
     public String hello(Model model) {
-        //Project route
+
         String dir = System.getProperty("user.dir");
         System.out.println("ルート：" + dir);
 
-//        System.out.println("LIFF起動時 flag -> " + flag);
-
         model.addAttribute("test", "報告フォーム");
         model.addAttribute("flag", flag);
+
         //ここでflag==trueのときfalseに戻す？
         if( flag.equals("true") ) {
             // ここでaddAttributeしたあとにflagを戻す文追加
             flag = "false";
         }
-//        System.out.println("LIFF起動後 flag -> " + flag);
 
         return "liff";
     }
 
+    //-------------------------------以下キャッシュ-------------------------------------------
 
-    /*
+    /**
     * Spring cacheの値を更新する
     * */
     @CachePut(value = "liffCache", key = "#lineid")
@@ -46,6 +51,38 @@ public class LIFFController {
         System.out.println("put");
         flag = tf;
 //        System.out.println("flag -> " + flag);
+    }
+
+    /**
+     * ReportBeanクラスをnewしてキャッシュ作成
+     * */
+    public void cacheReport(final String lineid) {
+        Cache cache = cacheManager.getCache("report");
+        cache.put(lineid, new ReportBean(lineid));
+    }
+
+    /**
+     * キャッシュの更新
+     */
+    public void putReport(String lineid, ReportBean reportBean) {
+        Cache cache = cacheManager.getCache("report");
+        cache.put(lineid, reportBean);
+    }
+
+    /**
+     * キャッシュの取り出し
+     * */
+    public ReportBean getReport(String lineid) {
+        Cache cache = cacheManager.getCache("report");
+        return (ReportBean) cache.get(lineid).get();
+    }
+
+    /**
+     * キャッシュの削除
+     * */
+    public void evictReport(String lineid) {
+        Cache cache = cacheManager.getCache("report");
+        cache.evict(lineid);
     }
 
 //    /*testページに遷移*/
