@@ -1,8 +1,9 @@
 package com.example.linebot.Bean;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class ReportBean {
+public class ReportBean implements Serializable {
 
     /*
     * 値を保存しておくで
@@ -12,13 +13,22 @@ public class ReportBean {
     private String lineId; //LINEid
     private int type;   //種別
     private int category;   //内容
-    private String detail =""; //詳細
+    private String detail; //詳細
     private double latitude;
     private double longitude;
-    private String accountId ="";
-    private String imagePath="";
-
+    private String accountId;
+    private String imagePath;
     public String flag;
+
+    public ReportBean(String userId) {
+        this.lineId = userId;
+        this.type = 0;
+        this.category = 0;
+        this.detail = "";
+        this.latitude = 0L;
+        this.longitude = 0L;
+        this.imagePath = "";
+    }
 
 
     public void setLineId(String lineId) {
