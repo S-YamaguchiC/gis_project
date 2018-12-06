@@ -1,10 +1,10 @@
 package com.example.linebot.line;
 
+import com.example.linebot.Bean.ReportBean;
+import com.example.linebot.controller.LIFFController;
 import com.example.linebot.dao.IReportDao;
 import com.example.linebot.line.sub.Callback;
 import com.example.linebot.others.ConvertId;
-import com.example.linebot.controller.LIFFController;
-import com.example.linebot.Bean.ReportBean;
 import com.example.linebot.others.Substring;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.client.MessageContentResponse;
@@ -152,8 +152,6 @@ public class CallbackV3 {
 
             } catch (ArrayIndexOutOfBoundsException e) {
                 e.printStackTrace();
-            } catch (NullPointerException e2) {
-                return reply("報告を送信できませんでした。\n画像を選択してもっかい試して");
             }
 
             return new TemplateMessage("内容を修正しますか", confirmTemplateLIFF(text+"\n内容を修正しますか？"));
@@ -197,11 +195,11 @@ public class CallbackV3 {
                     reportDao.insertAccountId(num, 2);
                     reportDao.registerLine(num, userId);
                 }
-                // DBに報告を送信
+                // DBに報告を送信（ここで画像なしだとNULL->ReportBeanがnewされてないからだと思う）
                 reportDao.insertContribution(controller.getReport(userId));
                 // PathをDBに送信
                 ReportBean reportBean = controller.getReport(userId);
-                System.out.println(reportBean.getImagePath());
+//                System.out.println(reportBean.getImagePath());
                 if (!reportBean.getImagePath().equals("")) reportDao.insertContributionImage(controller.getReport(userId));
                 // キャッシュの削除
                 controller.evictReport(userId);
@@ -271,9 +269,7 @@ public class CallbackV3 {
             Files.copy(is, tmpFilePath,REPLACE_EXISTING);
 
             // 保存したらCacheを作成
-            controller.cacheReport(event.getSource().getUserId());
-            ReportBean reportBean = controller.getReport(event.getSource().getUserId());
-            reportBean.setImagePath(String.valueOf(tmpFilePath));
+            controller.cacheReport(event.getSource().getUserId(), tmpFilePath.toString());
 
             return Optional.ofNullable(tmpFilePath.toString());
         } catch (IOException e) {
