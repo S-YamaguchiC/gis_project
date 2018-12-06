@@ -20,14 +20,14 @@ public class ReportBean implements Serializable {
     private String imagePath;
     public String flag;
 
-    public ReportBean(String userId) {
+    public ReportBean(String userId, String imagePath) {
         this.lineId = userId;
         this.type = 0;
         this.category = 0;
         this.detail = "";
         this.latitude = 0L;
         this.longitude = 0L;
-        this.imagePath = "";
+        this.imagePath = imagePath;
     }
 
 
