@@ -257,16 +257,37 @@ function setCurLocation(){
 }
 
 //--------------------------------------------------------------------------------------------------------------------
-//地図の表示切り替え
-function Display(no){
-    if(no === "no1"){
-        document.getElementById("mapid").style.display = "block";
-        document.getElementById("maphide").style.display = "none";
-    }else if(no === "no2"){
-        document.getElementById("mapid").style.display = "none";
-        document.getElementById("maphide").style.display = "block";
-    }
-}
+// //地図の表示切り替え
+// function Display(no){
+//     if(no === "no1"){
+//         document.getElementById("mapid").style.display = "block";
+//         document.getElementById("maphide").style.display = "none";
+//     }else if(no === "no2"){
+//         document.getElementById("mapid").style.display = "none";
+//         document.getElementById("maphide").style.display = "block";
+//     }
+// }
+
+//------------------------------------------------------------------------------------------------------------------
+//スクロール
+$(function () {
+    //　.cssaccのクリック処理
+    $(".cssacc").click(function () {
+        if (!$(this).hasClass("flag")) {
+            // 自身に"flag"classを追加し、次の要素(dd)をスライドダウン　⇒
+            $(this).addClass("flag").next().slideDown(function () {
+                // ページスクロールさせるためのドキュメント高さ位置を変数scrollPointに代入（※dt要素の高さも合わせて）
+                var scrollPoint = $(this).offset().top - $(".cssacc").height();
+                // オープンしたメニュー先頭までスクロール
+                $('body,html').animate({scrollTop: scrollPoint});
+                return false;
+
+            });
+        }
+        // クリックされたdt要素がオープン用フラグclassの"flag"を持っているか？
+    });
+});
+
 
 //-------------------------------------------------------------------------------------------------------------------
 //LINEid
@@ -277,6 +298,7 @@ function initApp(data) {
     liff.getProfile().then(function (profile) {
         userName = profile.displayName;
         //alert(userName);
+
     }).catch(function () {
         alert('Eroor! getting DisplayName failed');
     });
