@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Objects;
+
 @EnableCaching // cache使うため
 @Controller
 public class LIFFController {
@@ -56,9 +58,9 @@ public class LIFFController {
     /**
      * ReportBeanクラスをnewしてキャッシュ作成
      * */
-    public void cacheReport(final String lineid) {
+    public void cacheReport(final String lineid, String imagePath) {
         Cache cache = cacheManager.getCache("report");
-        cache.put(lineid, new ReportBean(lineid));
+        cache.put(lineid, new ReportBean(lineid, imagePath));
     }
 
     /**
@@ -74,6 +76,11 @@ public class LIFFController {
      * */
     public ReportBean getReport(String lineid) {
         Cache cache = cacheManager.getCache("report");
+
+        // 画像なし（Null）の場合はキャッシュを作成する
+        if (Objects.isNull(cache.get(lineid))) {
+            cacheReport(lineid, "");
+        }
         return (ReportBean) cache.get(lineid).get();
     }
 
