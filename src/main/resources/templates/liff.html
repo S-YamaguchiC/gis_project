@@ -7,17 +7,26 @@
     <title>Report Form</title>
     <style type="text/css">
         <!--
-        #mapid { height: 300px; width: 300px}
+        #mapid {
+            height: 450px;
+            width: 100%;
+            border-radius: 0 0 9px 9px;
+        }
         -->
     </style>
 </head>
 
-<body>
+<body style="background-color: #F8F8FF">
 
-<h1>[[${test}]]</h1>
+<!--<h1>[[${test}]]</h1>-->
 <!--action属性を"result.html"に指定すると500ステータスになる、"templates//result.html"にすると404ステータスになる-->
-<form id="report" name="report" method="post" enctype="multipart/form-data" action="result">
+<form id="report" name="report" enctype="text/plain">
     <table>
+        <tr>
+            <td>
+                <p class="title">報告状況投稿ページ</p>
+            </td>
+        </tr>
         <tr>
             <td>
                 <p class="font">
@@ -74,15 +83,20 @@
                 <!--<input type="hidden" name="filename" value="image">-->
             <!--</td>-->
         <!--</tr>-->
+        <!--------------------地図の表示・非表示-------------------->
+        <div class="accbox">
+            <!--ラベル1-->
+            <input type="checkbox" id="label1" class="cssacc"/>
+            <label for="label1">Map</label>
+            <div class="accshow">
+                <!--ここに隠す中身-->
+                <div id="mapid"></div>
+                <div id="maphide" style="display: none;"></div>
+            </div>
+        </div>
+        <!---->
         <tr>
-            <!--地図がものすごく見づらいので折りたたみにしたけど、動きがとても悪いので修正が必要-->
-            <!--マップの表示切り替え-->
-            <input type="button" value="地図を表示する" onclick="Display('no1')">
-            <input type="button" value="地図を非表示にする" onclick="Display('no2')">
-            <div id="mapid"></div>
-            <div id="maphide" style="display: none;"></div>
-
-            <input type="button" id="currentLocation" value="現在の位置情報を取得する" onclick="setCurLocation()">
+            <!--<input type="button" id="currentLocation" value="現在の位置情報を取得する" onclick="setCurLocation()">-->
             <!--JSで取得した位置情報を送信するためのHIDDEN-->
             <input type="hidden" name="lat" id="lat" value="Latitude">
             <input type="hidden" name="lng" id="lng" value="Longitude">
@@ -91,9 +105,9 @@
             <input type="hidden" name="flag" th:value="${flag}">
         </tr>
         <tr>
-            <td>
-                <input type="button" id="sendmessagebutton" value="送信する"  onclick="checking()">
-            </td>
+            <div>
+                <button type="button" class="square_btn" id="sendmessagebutton" onclick="checking()">報告する</button>
+            </div>
         </tr>
         <!--
         <tr>
