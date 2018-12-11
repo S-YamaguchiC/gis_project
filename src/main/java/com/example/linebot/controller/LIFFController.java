@@ -5,7 +5,6 @@ import com.example.linebot.dao.IReportDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,9 +26,9 @@ public class LIFFController {
 
     @GetMapping("/liff")
     public String hello(Model model) {
-
         String dir = System.getProperty("user.dir");
         System.out.println("ルート：" + dir);
+        System.out.println();
 
         model.addAttribute("test", "報告フォーム");
         model.addAttribute("flag", flag);
@@ -46,13 +45,24 @@ public class LIFFController {
     //-------------------------------以下キャッシュ-------------------------------------------
 
     /**
-    * Spring cacheの値を更新する
+    * Cookieの保存状態を変える
+     * True:消す、False:消さない
     * */
-    @CachePut(value = "liffCache", key = "#lineid")
-    public void putCache(String lineid, String tf) {
-        System.out.println("put");
+    public void putCookie(String lineid, String tf) {
+        System.out.println(lineid + ": put");
+        Cache cache = cacheManager.getCache("cookie");
+        cache.put(lineid, tf);
         flag = tf;
 //        System.out.println("flag -> " + flag);
+    }
+
+    /**
+     * getCookie
+     * @return
+     * */
+    public String getCookie(String lineid) {
+        Cache cache = cacheManager.getCache("cookie");
+        return (String) cache.get(lineid).get();
     }
 
     /**
@@ -73,6 +83,7 @@ public class LIFFController {
 
     /**
      * キャッシュの取り出し
+     * @return
      * */
     public ReportBean getReport(String lineid) {
         Cache cache = cacheManager.getCache("report");
