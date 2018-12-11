@@ -92,15 +92,16 @@ public class CallbackV3 {
 
     // 画像を保存したあとにLIFFを起動するためのテンプレ
     public Message goLiff() {
-        //ボタンに必要ぽいサムネイル画像
+        //ボタンに必要ぽいサムネイル画像(240xYYY)
         String thumbnailImageUrlCavet = "https://puu.sh/BbfNS/c2fa6e5411.jpg";
         String thumbnailImageUrlSiokawa = "https://puu.sh/C1nXK/5a48f5c50b.jpg";
+        String thumbnailImageUrlMazime = "https://puu.sh/CfYtJ/237d37a1b6.jpg";
         //種別の選択肢
         Action a = new URIAction("ENTER", "line://app/1596332300-YNnbBEEO");
         //種別のリスト
         List<Action> actions = Arrays.asList(a);
         //ユーザーに選択させるときのボタンテンプレ
-        ButtonsTemplate bt = new ButtonsTemplate(thumbnailImageUrlSiokawa,"報告フォームを起動", "報告して", actions);
+        ButtonsTemplate bt = new ButtonsTemplate(thumbnailImageUrlMazime,"報告フォームを起動", "報告して", actions);
 
         String altTitle = "報告フォームはこちら";
         //return new ReplyMessage(event.getReplyToken(), new TemplateMessage(altTitle, bt));
@@ -182,10 +183,10 @@ public class CallbackV3 {
             // 送信完了時にLIFFのCookieを削除する?
             // 消す=="true"  消さない=="false"
             // すでにtrueだったらfalseに変更？もしくはCache削除
-            controller.putCache(userId, "true");
+            controller.putCookie(userId, "true");
             // DBにぶちこみ
             if (flag2 == 1) {
-                controller.putCache(userId, "true");
+                controller.putCookie(userId, "true");
                 // DBにぶちこみ
                 // select文でLINEidの確認
                 if (!reportDao.existLineAccount(userId)) {
