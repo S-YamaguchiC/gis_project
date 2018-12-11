@@ -128,9 +128,9 @@ label > input {
 }
 
 /*チェックは隠す*/
-.accbox input {
-    display: none;
-}
+/*.accbox input {*/
+    /*display: none;*/
+/*}*/
 
 /*中身を非表示にしておく*/
 .accbox .accshow {
