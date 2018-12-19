@@ -206,7 +206,7 @@ public class CallbackV3 {
                 controller.evictReport(userId);
                 //flag2を0にする　以降、報告内容のボタンテンプレメッセージが送られない限り何もしない
                 flag2 = 0;
-                return reply("報告を送信しました。（仮）\nありがとうございます。");
+                return reply("報告を送信しました。\nありがとうございます。");
             } else {
                 //何もしない 警告出るけど問題ない(はず)
                 return reply("送信済みなんだから\nそういうことするのやめなさいよあんた");

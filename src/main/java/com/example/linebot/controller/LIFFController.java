@@ -28,7 +28,6 @@ public class LIFFController {
     public String hello(Model model) {
         String dir = System.getProperty("user.dir");
         System.out.println("ルート：" + dir);
-        System.out.println();
 
         model.addAttribute("test", "報告フォーム");
         model.addAttribute("flag", flag);
