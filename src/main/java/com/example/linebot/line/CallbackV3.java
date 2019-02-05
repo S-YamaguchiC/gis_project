@@ -266,7 +266,8 @@ public class CallbackV3 {
 
         existDir();
         try(InputStream is = resp.getStream()){
-            Path tmpFilePath = Files.createTempFile(Paths.get("C:/linebot-image"),"linebot", extention);
+//            Path tmpFilePath = Files.createTempFile(Paths.get("C:/linebot-image"),"linebot", extention);
+            Path tmpFilePath = Files.createTempFile(Paths.get("var/tmp/pictures"),"linebot", extention);
             Files.copy(is, tmpFilePath,REPLACE_EXISTING);
 
             // 保存したらCacheを作成
@@ -281,7 +282,8 @@ public class CallbackV3 {
 
     // 画像保存ディレクトリの存在チェック
     private void existDir() {
-        File file = new File("c:\\linebot-image");
+        File file = new File("var/tmp/pictures");
+//        File file = new File("c:\\linebot-image");
         if (file.exists()) {
             System.out.println("ファイルは存在します。");
         } else {

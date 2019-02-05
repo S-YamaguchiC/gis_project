@@ -334,7 +334,7 @@ function sendMessage() {
                 text: report
             }
         ]).then(function () {
-            window.alert("トークに流したゾ");
+            //window.alert("トークに流したゾ");
             liff.closeWindow();
         }).catch(function () {
             window.alert("トークに流せなかった");
